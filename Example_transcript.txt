@@ -1,0 +1,125 @@
+- [Voiceover] Here we have a simple page,
+00:02
+just a picture and a heading.
+00:04
+My goal is to make this page fancy
+00:07
+by starting with the image and the text as hidden
+00:10
+and then animating them in, like a slideshow.
+00:14
+Let me start with hiding them using jQuery.
+00:18
+So we're going to find the picture
+00:20
+and then call jQuery's 'hide' method on it.
+00:23
+Ta-da! It's gone.
+00:25
+And then we will find the text
+00:28
+and call 'hide' on it.
+00:30
+Gone! We got a white page.
+00:32
+So now, let's show them.
+00:35
+So, show the picture first.
+00:38
+It's back.
+00:39
+And then we'll show the text next,
+00:44
+and it's back.
+00:45
+So, we're back to what we started with basically.
+00:48
+And what happens here
+00:50
+is that we hid them and showed them so quickly
+00:54
+that it just looks like they were there all along.
+00:58
+What we actually want is to show them slowly
+01:02
+by animating them.
+01:04
+jQuery gives us lots of ways to animate, thankfully.
+01:08
+One way is to pass a number
+01:11
+as the first parameter of the 'show' method.
+01:14
+That number tells jQuery how slowly
+01:17
+to animate the element being shown.
+01:20
+There we go, and it animates it
+01:22
+in the top-left getting bigger.
+01:25
+That's cool.
+01:26
+What if we want it to slide down from the top?
+01:30
+We can replace 'show' with 'slideDown'.
+01:34
+There we go.
+01:36
+Now, let's animate the text.
+01:39
+I'll call 'slideDown' again
+01:41
+and I'm going to make the duration a little longer
+01:44
+to make sure we can really see it.
+01:46
+There, nice and slow.
+01:49
+Okay.
+01:50
+This is pretty fancy already,
+01:52
+but let's go one step further.
+01:55
+What if we only wanted to fade in this text
+01:58
+after we knew that the image was fully shown?
+02:01
+Basically, instead of starting these animations
+02:04
+at the same time,
+02:05
+we want the text animation
+02:07
+to start only after the image animation has ended.
+02:12
+For that, we can pass a 'callback function'
+02:14
+as the second parameter of the 'slideDown' function.
+02:18
+jQuery will call that callback
+02:20
+when the animation is complete,
+02:23
+which is just what we want.
+02:24
+Let's try it out.
+02:27
+There we go.
+02:29
+Now let's go ahead and change this animation
+02:33
+to a new method, 'fadeIn'.
+02:35
+And we don't even have to specify a duration
+02:38
+because there's a default duration for all these animations.
+02:40
+There. Very nice.
+02:43
+So can you imagine how you might use this
+02:45
+to make a slideshow?
+02:46
+You actually get to try that out in a project pretty soon.
