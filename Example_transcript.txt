@@ -1,4 +1,4 @@
-- [Voiceover] Here we have a simple page,
+- [Voiceover] Here we have a simple chrome page,
 00:02
 just a picture and a heading.
 00:04

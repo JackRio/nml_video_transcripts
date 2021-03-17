@@ -21,7 +21,9 @@ window.onload = function(){
     str = str.replace(/\d{2}:\d{2}/g, " ");
 
     // replace word from regex with hyperlink + color
-    str = str.replace(/page/g, '<a href="https://www.google.com" target="_blank" style="color:red;">chrome</a>');
+    str = str.replace(/chrome/, '<a href="https://en.wikipedia.org/wiki/Google_Chrome" target="_blank" style="color:red;">chrome</a>');
+    str = str.replace(/slideshow/, '<a href="https://en.wikipedia.org/wiki/Slide_show" target="_blank" style="color:red;">slideshow</a>');
+    str = str.replace(/jQuery/, '<a href="https://en.wikipedia.org/wiki/JQuery" target="_blank" style="color:red;">jQuery</a>');
 
     // multiple words need splitting:
     // var toStr = String(reg);
