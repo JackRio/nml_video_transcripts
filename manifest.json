@@ -6,7 +6,7 @@
         {
             "matches": ["<all_urls>"],
             "css": ["css/index.css"],
-            "js": ["js/button.js"]
+            "js": ["js/button_start.js"]
         }
     ],
     "browser_action": {

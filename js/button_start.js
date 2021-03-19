@@ -6,7 +6,7 @@
 
 document.addEventListener('DOMContentLoaded', function(){
     // Only execute the function when button is clicked
-    document.querySelector('button').addEventListener('click', onclick, false)
+    document.getElementById('button_start').addEventListener('click', onclick, false)
 
     function onclick(){
         chrome.tabs.query({active: true, currentWindow: true}, 
