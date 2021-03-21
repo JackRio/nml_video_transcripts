@@ -1,0 +1,39 @@
+
+/* Change background into dancing unicorn: */
+/*
+body {
+  background: url('https://media.giphy.com/media/3o7WTDJQVuYwhhuLhC/giphy.gif') !important;
+}
+ 
+#masthead,
+#primary {
+  -webkit-filter: invert(100%);
+  filter: invert(100%);
+  background-color: #fff;
+  padding: 20px !important;
+}
+#masthead {
+  background: none;
+}
+#masthead img, #primary img {
+  -webkit-filter: invert(100%);
+  filter: invert(100%);
+}*/
+
+#button_font, #button_download, #button_keywords{
+  padding: 5px;
+}
+
+.button-wrapper {
+  position: -webkit-sticky; /* Safari */
+  position: sticky;
+  top: 0;
+  left: 5;
+  padding-top: 1%;
+  padding-bottom: 1%;
+  background-color: white;
+}
+
+.transcript {
+  font-size: 100%;
+}
