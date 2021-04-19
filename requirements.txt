@@ -6,3 +6,6 @@ youtube_transcript_api==0.4.1
 nltk~=3.5
 spacy~=3.0.5
 Flask~=1.1.2
+transformers~=4.5.1
+requests~=2.25.1
+flair~=0.8.0.post1
