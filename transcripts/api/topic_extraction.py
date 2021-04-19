@@ -1,20 +1,17 @@
 import json
 import re
-import requests
 
 import gensim
 import nltk
 import spacy
+from flair.data import Sentence
+from flair.models import SequenceTagger
 from gensim import corpora
 from nltk.corpus import wordnet as wn
 from nltk.stem.wordnet import WordNetLemmatizer
 from spacy.lang.en import English
-from transformers import AutoTokenizer, AutoModelForTokenClassification
+from transformers import AutoTokenizer, AutoModelForSeq2SeqLM
 
-from constants import constants
-
-# nltk.download('wordnet')
-# nltk.download('stopwords')
 spacy.load('en_core_web_trf')
 
 parser = English()
@@ -81,14 +78,40 @@ class TopicExtraction:
 
 class TokenClassification:
     def __init__(self):
-        self.API_URL = "https://api-inference.huggingface.co/models/elastic/distilbert-base-cased-finetuned-conll03-english"
-        self.headers = {"Authorization": f"Bearer {constants.API_TOKEN}"}
+        self.tagger = SequenceTagger.load('ner')
+        self.nlp = spacy.load('en_core_web_md')
 
-    def query(self, payload):
-        data = json.dumps(payload)
-        response = requests.request("POST", self.API_URL, headers=self.headers, data=data)
-        return json.loads(response.content.decode("utf-8"))
+    def tokenize_sentences(self, data):
+        return [i for i in self.nlp(data).sents]
 
-    def tokenize(self, text):
-        data = self.query(text)
+    def tokenize(self, data):
+        spans = set()
+        for sent in self.tokenize_sentences(data):
+            sentence = Sentence(str(sent))
+            self.tagger.predict(sentence)
+            for entity in sentence.get_spans('ner'):
+                text = entity.text
+                text = re.sub('[^A-Za-z0-9 ]', '', text)
+                spans.add(text)
+        return list(spans)
 
+
+class TextSummarization:
+    def __init__(self):
+        self.tokenizer = AutoTokenizer.from_pretrained("sshleifer/distilbart-cnn-12-6")
+        self.model = AutoModelForSeq2SeqLM.from_pretrained("sshleifer/distilbart-cnn-12-6")
+
+    @staticmethod
+    def clean_html(raw_html):
+        cleanr = re.compile('<.*?>')
+        cleantext = re.sub(cleanr, '', raw_html)
+        return cleantext
+
+    def summarize(self, data):
+        inputs = self.tokenizer.encode("summarize: " + data, return_tensors="pt", truncation=True, max_length=1024)
+        outputs = self.model.generate(inputs, max_length=250, min_length=450, length_penalty=2.0, num_beams=4,
+                                      early_stopping=True)
+        generated = self.tokenizer.decode(outputs[0])
+        generated = self.clean_html(generated)
+
+        return generated
