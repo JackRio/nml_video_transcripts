@@ -1,4 +1,3 @@
-import json
 import re
 
 from youtube_transcript_api import YouTubeTranscriptApi
@@ -10,13 +9,14 @@ class YoutubeURLTranscriptions:
         video_id = re.search(r"v=(?P<video_id>[a-zA-Z\d_\-]+)", url).group(1)
         transcript = YouTubeTranscriptApi.get_transcript(video_id)
         transcript = self.clean_transcripts(transcript)
-        return json.dumps(transcript)
+        return transcript
 
     @staticmethod
     def clean_transcripts(transcript):
         cleaned_transcripts = list()
         for item in transcript:
             cleaned_transcripts.append(item['text'])
+        cleaned_transcripts = " ".join(cleaned_transcripts)
         return cleaned_transcripts
 
 

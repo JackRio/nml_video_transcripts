@@ -1,6 +1,6 @@
 import wikipediaapi
 
-from transcripts.constants import constants
+from transcripts.api.constants import constants
 
 
 class WikiSearch:

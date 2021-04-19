@@ -1,5 +1,6 @@
 import json
 import re
+import requests
 
 import gensim
 import nltk
@@ -8,6 +9,9 @@ from gensim import corpora
 from nltk.corpus import wordnet as wn
 from nltk.stem.wordnet import WordNetLemmatizer
 from spacy.lang.en import English
+from transformers import AutoTokenizer, AutoModelForTokenClassification
+
+from constants import constants
 
 # nltk.download('wordnet')
 # nltk.download('stopwords')
@@ -73,3 +77,18 @@ class TopicExtraction:
         for topic in topics:
             cleaned_topics.append(re.search(r'[\"](\w+)', topic[1]).group(1))
         return cleaned_topics
+
+
+class TokenClassification:
+    def __init__(self):
+        self.API_URL = "https://api-inference.huggingface.co/models/elastic/distilbert-base-cased-finetuned-conll03-english"
+        self.headers = {"Authorization": f"Bearer {constants.API_TOKEN}"}
+
+    def query(self, payload):
+        data = json.dumps(payload)
+        response = requests.request("POST", self.API_URL, headers=self.headers, data=data)
+        return json.loads(response.content.decode("utf-8"))
+
+    def tokenize(self, text):
+        data = self.query(text)
+
