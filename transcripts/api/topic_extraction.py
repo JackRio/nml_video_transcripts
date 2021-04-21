@@ -12,7 +12,6 @@ from nltk.stem.wordnet import WordNetLemmatizer
 from spacy.lang.en import English
 from transformers import AutoTokenizer, AutoModelForSeq2SeqLM
 
-spacy.load('en_core_web_trf')
 
 parser = English()
 en_stop = set(nltk.corpus.stopwords.words('english'))
@@ -56,6 +55,7 @@ class TopicExtraction:
 
     def fetch_transcript(self, data):
         text_data = []
+        print(type(data))
         data = json.loads(data)
         for line in data:
             tokens = self.prepare_text_for_lda(line)
