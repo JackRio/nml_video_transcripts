@@ -17,8 +17,6 @@ class YoutubeURLTranscriptions:
         transcript = self.clean_transcripts(transcript)
         return transcript
 
-    # TODO: Send transcript from an endpoint
-
     @staticmethod
     def clean_transcripts(transcript):
         cleaned_transcripts = list()

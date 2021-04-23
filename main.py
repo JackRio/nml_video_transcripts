@@ -41,7 +41,6 @@ def send_topics():
         url = url['url']
 
         # Function calls
-        transcript = web_obj.youtube.url_to_transcipts(url=url)
         captions = web_obj.youtube.url_to_json(url=url)
 
         # TODO: Change the method to get json file
