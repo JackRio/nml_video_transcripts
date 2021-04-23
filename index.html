@@ -3,15 +3,23 @@
 <head>
     <meta charset="UTF-8">
     <title>Video Transcript</title>
-    <link rel="stylesheet" href="css/index.css">
-    <script src="js/index.js" charset="utf-8"></script>
+    <link type="text/css" rel="stylesheet" href="css/index.css">
+    <script type="text/javascript" src="js/index.js"></script>
 </head>
 <body>
-    <div class="button-wrapper">
-        <button id="button_keywords">Add keywords</button>
-        <button id="button_font">Change font size</button>
-        <button id="button_download">Download transcript</button>
+    <div class="button-wrapper" id="button-wrapper">
+        <button class="button_about" type="button" id="button_about">About</button>
+        <button class="button_options" type="button" id="button_options">Options</button>
+        <button class="button_download" type="button" id="button_download">Download transcript</button>
+
+        <div class="options_menu" id="options_menu">
+            <button class="button_keywords" type="button" id="button_keywords">Add keywords</button>
+            <button class="button_font" type="button" id="button_font">Font size</button>
+            <button class="button_dark_light" type="button" id="button_dark_light">Dark mode</button>
+        </div>
     </div>
+
     <div class="transcript" id="transcript">Transcript</div>
+
 </body>
 </html>
