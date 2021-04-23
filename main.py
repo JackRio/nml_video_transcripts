@@ -30,11 +30,7 @@ def send_transcripts():
         wiki_trans = dict()
         wiki_trans['__transcript'] = transcript
 
-        #
-        example_embed='This string is from python'
-        return render_template('index.html', embed=example_embed)
-
-        #return wiki_trans
+        return wiki_trans
 
 
 @app.route('/incoming', methods=['GET', 'POST'])

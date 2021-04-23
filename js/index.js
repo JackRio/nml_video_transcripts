@@ -4,7 +4,7 @@ Remove time notations
 */
 
 window.onload = function(){
-    var request = new XMLHttpRequest();
+    //var request = new XMLHttpRequest();
     //request.open('GET', './Example_transcript.txt', false);
     //request.send();
 
@@ -16,53 +16,59 @@ window.onload = function(){
     //       console.log(text); 
     //   });
 
+    
+  
     var server = "http://127.0.0.1:5000";
     var appdir = "/transcript";
-  
     var info = {'url':'https://www.youtube.com/watch?v=flthk8SNiiE?'};
 
     $.ajax({
   
-        type:"POST",
-        url: server+ appdir,
-        data: JSON.stringify(info),
-        dataType: "json",
-        contentType: "application/json;charset=UTF-8",
-        success: function(res){
-  
-            console.log(res);
+    type:"POST",
+    url: server+ appdir,
+    data: JSON.stringify(info),
+    dataType: "json",
+    contentType: "application/json;charset=UTF-8",
+    success: function(res){
+        console.log(res)
         }
-    })
-
-    function getResponse(string) {
-        $.ajax({
-            url: '/conversation',
-            headers: {
-                'Content-Type':'application/json'
-            },
-            method: 'POST',
-            dataType: 'json',
-            data: '{ "question" : "'+ string +'"}'
-        }).always( function(data) {
-            if(data.status == 200){
-                var dataArr = data.responseText.split('$')
-                var datastr = dataArr.join();
-                for(var i = 0;i<dataArr.length;i++){
-                    appendBotChat(dataArr[i])
-                    $('.chatlog').animate({scrollTop: 200000000});
+    });
+                       
     
-                }
-                if(document.getElementById("audio").classList.contains("fa-volume-up"))
-                {
-                    responsiveVoice.speak(datastr);
-                }
-            }
-        });
-    }
+
+    // function getResponse(string) {
+    //     $.ajax({
+    //         url: '/conversation',
+    //         headers: {
+    //             'Content-Type':'application/json'
+    //         },
+    //         method: 'POST',
+    //         dataType: 'json',
+    //         data: '{ "question" : "'+ string +'"}'
+    //     }).always( function(data) {
+    //         if(data.status == 200){
+    //             var dataArr = data.responseText.split('$')
+    //             var datastr = dataArr.join();
+    //             for(var i = 0;i<dataArr.length;i++){
+    //                 appendBotChat(dataArr[i])
+    //                 $('.chatlog').animate({scrollTop: 200000000});
+    
+    //             }
+    //             if(document.getElementById("audio").classList.contains("fa-volume-up"))
+    //             {
+    //                 responsiveVoice.speak(datastr);
+    //             }
+    //         }
+    //     });
+    // }
 
     //var getTranscript = '{{ __transcript | tojson }}';
     //console.log(getTranscript)
-    var textfileContent = request.responseText;
+    //var textfileContent = request.responseText;
+    
+    // => This should be the new transcript content
+    var textfileContent = "hello";
+
     var keywords_clicked = false;
     var big_font = false;
     var dark_mode = false;
