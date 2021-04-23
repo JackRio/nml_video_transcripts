@@ -5,7 +5,8 @@ from youtube_transcript_api import YouTubeTranscriptApi
 
 class YoutubeURLTranscriptions:
 
-    def url_to_transcipts(self, url):
+    @staticmethod
+    def url_to_transcipts(url):
         video_id = re.search(r"v=(?P<video_id>[a-zA-Z\d_\-]+)", url).group(1)
         transcript = YouTubeTranscriptApi.get_transcript(video_id)
         return transcript
