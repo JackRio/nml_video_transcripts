@@ -4,70 +4,40 @@ Remove time notations
 */
 
 window.onload = function(){
-    //var request = new XMLHttpRequest();
-    //request.open('GET', './Example_transcript.txt', false);
-    //request.send();
-
-    // fetch('/transcript')
-    //   .then(function (response) {
-    //       return response.text();
-    //   }).then(function (text) {
-    //       console.log('GET response text:');
-    //       console.log(text); 
-    //   });
-
-    
-  
     var server = "http://127.0.0.1:5000";
     var appdir = "/transcript";
-    var info = {'url':'https://www.youtube.com/watch?v=flthk8SNiiE?'};
+    var topic_endpoint = '/incoming'
 
+    function fetchURL(tabs){
+        var urls = [];
+        for (tab in tabs){
+            urls.push(tabs[tab].url);
+        }
+        return urls;
+    }
+    var output = chrome.tabs.query({'active': true}, fetchURL(tabs))
+
+    var info = {'url':output[0]};
+    console.log(info)
+
+function fetchTranscripts(server, endpoint, info) {
+    var result = false
     $.ajax({
   
     type:"POST",
-    url: server+ appdir,
+    url: server+ endpoint,
     data: JSON.stringify(info),
     dataType: "json",
+    async: false,
     contentType: "application/json;charset=UTF-8",
     success: function(res){
-        console.log(res)
+          result = res['__transcript'];
         }
     });
-                       
-    
+    return result
+    }
 
-    // function getResponse(string) {
-    //     $.ajax({
-    //         url: '/conversation',
-    //         headers: {
-    //             'Content-Type':'application/json'
-    //         },
-    //         method: 'POST',
-    //         dataType: 'json',
-    //         data: '{ "question" : "'+ string +'"}'
-    //     }).always( function(data) {
-    //         if(data.status == 200){
-    //             var dataArr = data.responseText.split('$')
-    //             var datastr = dataArr.join();
-    //             for(var i = 0;i<dataArr.length;i++){
-    //                 appendBotChat(dataArr[i])
-    //                 $('.chatlog').animate({scrollTop: 200000000});
-    
-    //             }
-    //             if(document.getElementById("audio").classList.contains("fa-volume-up"))
-    //             {
-    //                 responsiveVoice.speak(datastr);
-    //             }
-    //         }
-    //     });
-    // }
-
-    //var getTranscript = '{{ __transcript | tojson }}';
-    //console.log(getTranscript)
-    //var textfileContent = request.responseText;
-    
-    // => This should be the new transcript content
-    var textfileContent = "hello";
+    var textfileContent = fetchTranscripts(server, appdir, info);
 
     var keywords_clicked = false;
     var big_font = false;
@@ -80,20 +50,17 @@ window.onload = function(){
     var transcript_id_content = document.getElementById("transcript");
     var button_wrapper = document.getElementById("button-wrapper");
     var button_about = document.getElementById("button_about");
-        
-    transcript_id_content.innerHTML = textfileContent;
-    var str = transcript_id_content.innerHTML;
+
     var str_keywords = "";
-        //, reg = /page/ig; //g is to replace all occurences
-        // multiple words: reg = /red|blue|green|orange/ig; 
+    var final_str = '';
+    for (ele in textfileContent){
+        final_str += textfileContent[ele]['text'] + " "
+    }
+
 
     // replace duration notations with whitespace
-    str_clean = str.replace(/", "start": (\d)+.(\d)+, "duration": (\d)+.(\d)+}, {"text": "/g, " ");
-    str_clean = str_clean.replace(/\[{"text": "/, " ");
-    str_clean = str_clean.replace(/", "start": (\d)+.(\d)+, "duration": (\d)+.(\d)+}\]/, " ");
-    str_clean = str_clean.replace(/\\n/g, " ");
 
-    transcript_id_content.innerHTML = str_clean;
+    transcript_id_content.innerHTML = final_str;
 
     button_options.addEventListener('click', onclick_options, false);
     button_download.addEventListener('click', onclick_download, false);
