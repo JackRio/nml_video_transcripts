@@ -22,6 +22,7 @@ class WebTranscripts:
 def send_transcripts():
     if request.method == 'POST':
         url = request.get_json()
+        print(type(url), url)
         url = url['url']
 
         # TODO: Add edge cases.

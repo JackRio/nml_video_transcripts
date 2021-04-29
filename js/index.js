@@ -5,45 +5,16 @@ Remove time notations
 
 window.onload = function(){
     var server = "http://127.0.0.1:5000";
-    var appdir = "/transcript";
-    var topic_endpoint = '/incoming'
-
-    function fetchURL(tabs){
-        var urls = [];
-        for (tab in tabs){
-            urls.push(tabs[tab].url);
-        }
-        return urls;
-    }
-    var output = chrome.tabs.query({'active': true}, fetchURL(tabs))
-
-    var info = {'url':output[0]};
-    console.log(info)
-
-function fetchTranscripts(server, endpoint, info) {
-    var result = false
-    $.ajax({
-  
-    type:"POST",
-    url: server+ endpoint,
-    data: JSON.stringify(info),
-    dataType: "json",
-    async: false,
-    contentType: "application/json;charset=UTF-8",
-    success: function(res){
-          result = res['__transcript'];
-        }
-    });
-    return result
-    }
-
-    var textfileContent = fetchTranscripts(server, appdir, info);
-
+    var transcript_endpoint = "/transcript";
+    var topic_endpoint = '/incoming';
+    var info;
+    var textfileContent;
     var keywords_clicked = false;
     var big_font = false;
     var dark_mode = false;
     var options_clicked = false;
     var about_clicked = false;
+    var str_keywords = "";
     var button_options = document.getElementById("button_options");
     var button_download = document.getElementById("button_download");
     var button_keywords = document.getElementById("button_keywords");
@@ -51,16 +22,36 @@ function fetchTranscripts(server, endpoint, info) {
     var button_wrapper = document.getElementById("button-wrapper");
     var button_about = document.getElementById("button_about");
 
-    var str_keywords = "";
-    var final_str = '';
-    for (ele in textfileContent){
-        final_str += textfileContent[ele]['text'] + " "
+
+    chrome.tabs.query({'active': true}, function (tabs) {
+        info = {'url':tabs[0].url};
+        fetchTranscripts(server, transcript_endpoint, info)
+    });
+
+    function fetchTranscripts(server, transcript_endpoint, info) {
+        $.ajax({
+
+            type:"POST",
+            url: server+ transcript_endpoint,
+            data: JSON.stringify(info),
+            dataType: "json",
+            contentType: "application/json;charset=UTF-8",
+            success: function(res){
+                  result = res['__transcript'];
+                  postTranscript(result)
+                }
+            });
     }
 
+    function postTranscript(result){
+        var final_str = '';
+        for (ele in result){
+            final_str += result[ele]['text'] + " "
+        }
+        transcript_id_content.innerHTML = final_str;
+    }
 
     // replace duration notations with whitespace
-
-    transcript_id_content.innerHTML = final_str;
 
     button_options.addEventListener('click', onclick_options, false);
     button_download.addEventListener('click', onclick_download, false);
@@ -84,7 +75,7 @@ function fetchTranscripts(server, endpoint, info) {
             keywords_clicked = false;
         }
     // replace word from regex with hyperlink + color
-    
+
     // multiple words need splitting:
     // var toStr = String(reg);
     // var color = (toStr.replace('\/g', '|')).substring(1);
