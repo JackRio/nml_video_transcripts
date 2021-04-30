@@ -1,6 +1,6 @@
 from flask import Flask, jsonify, request
 
-from transcripts.api import topic_extraction, youtube_api, wiki_api, google_api
+from transcripts.api import topic_extraction, youtube_api, wiki_api
 
 app = Flask(__name__)
 
@@ -10,9 +10,7 @@ class WebTranscripts:
         self.youtube = youtube_api.YoutubeURLTranscriptions()
 
         self.wiki = wiki_api.WikiSearch()
-        self.google = google_api.GoogleAPI()
 
-        # self.topic = topic_extraction.TopicExtraction()
         self.ner = topic_extraction.TokenClassification()
         self.summarization = topic_extraction.TextSummarization()
 
@@ -56,8 +54,6 @@ def send_topics():
             if web_obj.wiki.check_page(topic):
                 wiki_urls[topic] = web_obj.wiki.fetch_url()
                 web_obj.wiki.reset()
-            # else:
-            #     wiki_urls[topic] = web_obj.google.google_search(topic)
 
         return wiki_urls
     else:
