@@ -34,7 +34,7 @@ window.onload = function(){
         $.ajax({
 
             type:"POST",
-            url: server+ transcript_endpoint,
+            url: server + transcript_endpoint,
             data: JSON.stringify(info),
             dataType: "json",
             contentType: "application/json;charset=UTF-8",
@@ -48,8 +48,7 @@ window.onload = function(){
         $.ajax({
 
             type:"POST",
-            url: server+ topic_endpoint,
-            data: JSON.stringify(info),
+            url: server + topic_endpoint,
             dataType: "json",
             contentType: "application/json;charset=UTF-8",
             success: function(res){
