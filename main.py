@@ -14,39 +14,33 @@ class WebTranscripts:
         self.ner = topic_extraction.TokenClassification()
         self.summarization = topic_extraction.TextSummarization()
 
+        self.url = None
+        self.captions = None
+
 
 # app route for wiki and google search.
 @app.route('/transcript', methods=['GET', 'POST'])
 def send_transcripts():
     if request.method == 'POST':
-        url = request.get_json()
-        print(type(url), url)
-        url = url['url']
+        response = request.get_json()
+        web_obj.url = response['url']
 
         # TODO: Add edge cases.
         # Function calls
-        transcript = web_obj.youtube.url_to_transcipts(url=url)
+        transcript = web_obj.youtube.url_to_transcipts(url=web_obj.url)
         wiki_trans = dict()
         wiki_trans['__transcript'] = transcript
 
         return wiki_trans
 
 
-@app.route('/incoming', methods=['GET', 'POST'])
+@app.route('/topics', methods=['GET', 'POST'])
 def send_topics():
     if request.method == 'POST':
 
-        url = request.get_json()
-        url = url['url']
+        web_obj.captions = web_obj.youtube.url_to_json(url=web_obj.url)
 
-        # Function calls
-        captions = web_obj.youtube.url_to_json(url=url)
-        # TODO: Change the method to get json file
-        topics = web_obj.ner.tokenize(data=captions)
-        print(topics)
-        # TODO: Not using this for now if the end to end is working we will define how to use this
-        # ner = web_obj.ner.tokenize(data=captions)
-        # summary = web_obj.summarization.summarize(data=captions)
+        topics = web_obj.ner.tokenize(data=web_obj.captions)
 
         wiki_urls = dict()
 
@@ -57,8 +51,19 @@ def send_topics():
 
         return wiki_urls
     else:
-        message = {'text': 'Some wiki link'}
-        return jsonify(message)
+        return dict()
+
+
+@app.route('/summary', methods=['GET', 'POST'])
+def send_topics():
+    if request.method == 'POST':
+
+        summary = web_obj.summarization.summarize(data=web_obj.captions)
+        response = {'summary': summary}
+        return response
+    else:
+        response = {'summary': web_obj.captions}
+        return response
 
 
 if __name__ == '__main__':

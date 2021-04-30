@@ -6,7 +6,8 @@ Remove time notations
 window.onload = function(){
     var server = "http://127.0.0.1:5000";
     var transcript_endpoint = "/transcript";
-    var topic_endpoint = '/incoming';
+    var topic_endpoint = '/topics';
+    var summary_endpoint = '/summary'
     var info;
     var textfileContent;
     var keywords_clicked = false;
