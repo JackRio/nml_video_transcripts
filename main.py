@@ -12,7 +12,7 @@ class WebTranscripts:
         self.wiki = wiki_api.WikiSearch()
         self.google = google_api.GoogleAPI()
 
-        self.topic = topic_extraction.TopicExtraction()
+        # self.topic = topic_extraction.TopicExtraction()
         self.ner = topic_extraction.TokenClassification()
         self.summarization = topic_extraction.TextSummarization()
 
@@ -43,10 +43,9 @@ def send_topics():
 
         # Function calls
         captions = web_obj.youtube.url_to_json(url=url)
-
         # TODO: Change the method to get json file
         topics = web_obj.ner.tokenize(data=captions)
-
+        print(topics)
         # TODO: Not using this for now if the end to end is working we will define how to use this
         # ner = web_obj.ner.tokenize(data=captions)
         # summary = web_obj.summarization.summarize(data=captions)
@@ -57,8 +56,8 @@ def send_topics():
             if web_obj.wiki.check_page(topic):
                 wiki_urls[topic] = web_obj.wiki.fetch_url()
                 web_obj.wiki.reset()
-            else:
-                wiki_urls[topic] = web_obj.google.google_search(topic)
+            # else:
+            #     wiki_urls[topic] = web_obj.google.google_search(topic)
 
         return wiki_urls
     else:

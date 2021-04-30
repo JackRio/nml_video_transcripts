@@ -26,6 +26,7 @@ window.onload = function(){
     chrome.tabs.query({'active': true}, function (tabs) {
         info = {'url':tabs[0].url};
         fetchTranscripts(server, transcript_endpoint, info)
+        fetchTopics(server, topic_endpoint, info)
     });
 
     function fetchTranscripts(server, transcript_endpoint, info) {
@@ -39,6 +40,19 @@ window.onload = function(){
             success: function(res){
                   result = res['__transcript'];
                   postTranscript(result)
+                }
+            });
+    }
+    function fetchTopics(server, topic_endpoint, info){
+        $.ajax({
+
+            type:"POST",
+            url: server+ topic_endpoint,
+            data: JSON.stringify(info),
+            dataType: "json",
+            contentType: "application/json;charset=UTF-8",
+            success: function(res){
+                console.log('topics: ', res);
                 }
             });
     }
