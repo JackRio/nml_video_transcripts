@@ -1,4 +1,4 @@
-from flask import Flask, jsonify, request
+from flask import Flask, request
 
 from transcripts.api import topic_extraction, youtube_api, wiki_api
 
@@ -55,7 +55,7 @@ def send_topics():
 
 
 @app.route('/summary', methods=['GET', 'POST'])
-def send_topics():
+def send_summary():
     if request.method == 'POST':
 
         summary = web_obj.summarization.summarize(data=web_obj.captions)
