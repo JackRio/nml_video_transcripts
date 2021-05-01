@@ -4,6 +4,9 @@
 //   images[i].src = 'http://placekitten.com/' + images[i].width + '/' + images[i].height;
 // }
 
+
+
+// TODO: Change the code for fetching YouTube link
 document.addEventListener('DOMContentLoaded', function(){
     // Only execute the function when button is clicked
     document.getElementById('button_start').addEventListener('click', onclick, false)

@@ -1,10 +1,9 @@
-
 /* Change background into dancing unicorn: */
 /*
 body {
   background: url('https://media.giphy.com/media/3o7WTDJQVuYwhhuLhC/giphy.gif') !important;
 }
- 
+
 #masthead,
 #primary {
   -webkit-filter: invert(100%);
@@ -20,20 +19,37 @@ body {
   filter: invert(100%);
 }*/
 
-#button_font, #button_download, #button_keywords{
+button {
   padding: 5px;
+  border: 0.1rem solid #d3d3d3;
+  border-radius: 4px;
 }
 
 .button-wrapper {
   position: -webkit-sticky; /* Safari */
   position: sticky;
   top: 0;
-  left: 5;
-  padding-top: 1%;
-  padding-bottom: 1%;
-  background-color: white;
+  left: 0;
+  padding: 0.5em 0.5em 0.5em 0.5em;
+  border: 0.1rem solid rgb(148, 148, 148);
+  border-radius: 4px;
+  background-color: rgb(148, 148, 148);
+  text-align: center;
 }
 
 .transcript {
   font-size: 100%;
+}
+
+.options_menu {
+  width: 100%;
+  height: 100%;
+  box-sizing: border-box;
+  left: 0;
+  padding: 1.5rem;
+  background-color: rgb(61, 61, 61);
+  border: 0.1rem solid rgb(61, 61, 61);
+  border-radius: 4px;
+  display: none;
+  text-align: center;
 }
