@@ -24,12 +24,12 @@ class TokenClassification:
             if ent.label_ not in label_list:
                 continue
 
-            entities.add(ent.text.lower())
+            entities.add(ent.text)
 
         if len(entities) < len(list(doc.sents)) * 0.1 or len(entities) < 5:
             for token in doc:
                 if token.tag_ == "NNP" and not token.is_stop and len(token.text) > 3:
-                    entities.add(token.text.lower())
+                    entities.add(token.text)
 
         return list(entities)
 
