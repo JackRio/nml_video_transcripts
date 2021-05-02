@@ -9,50 +9,64 @@ window.onload = function(){
     var topic_endpoint = '/topics';
     var summary_endpoint = '/summary'
     var info;
-    var textfileContent;
-    var keywords_clicked = false;
+    var keywords_clicked = true;
     var big_font = false;
     var dark_mode = false;
     var options_clicked = false;
+    var download_clicked = false;
     var about_clicked = false;
-    var str_keywords = "";
+    var button_font = document.getElementById("button_font");
     var button_options = document.getElementById("button_options");
     var button_download = document.getElementById("button_download");
     var button_keywords = document.getElementById("button_keywords");
     var transcript_id_content = document.getElementById("transcript");
     var button_wrapper = document.getElementById("button-wrapper");
     var button_about = document.getElementById("button_about");
+   
 
+    ///////////// Transcript functions /////////////
+    getTab(keywords_clicked);
 
-    chrome.tabs.query({'active': true}, function (tabs) {
-        info = {'url':tabs[0].url};
-        fetchTranscripts(server, transcript_endpoint, info)
-        
-    });
+    function getTab(keywords_clicked, download_clicked){
+        chrome.tabs.query({'active': true}, function (tabs) {
+            info = {'url':tabs[0].url};
+            fetchTranscripts(server, transcript_endpoint, info, keywords_clicked, download_clicked);
+        });
+    }
 
-    function fetchTranscripts(server, transcript_endpoint, info) {
+    function fetchTranscripts(server, transcript_endpoint, info, keywords_clicked) {
         $.ajax({
-
             type:"POST",
             url: server + transcript_endpoint,
             data: JSON.stringify(info),
             dataType: "json",
             contentType: "application/json;charset=UTF-8",
             success: function(res){
-                  result = res['__transcript'];
-                  fetchTopics(server, topic_endpoint, info, result)
+                result = res['__transcript'];
+                var final_str = '';
+
+                for (ele in result){
+                    final_str += result[ele]['text'] + " "
+                }
+                transcript_id_content.innerHTML = final_str;
+                
+                if(keywords_clicked){
+                    console.log('Keywords on');
+                    fetchTopics(server, topic_endpoint, final_str);
+                } else {
+                    console.log('Keywords off');
+                }
+
+                if(download_clicked){
+                    download_clicked = false;
+                    download_transcript(final_str);
+                }
                 }
             });
     }
-    function fetchTopics(server, topic_endpoint, info, result){
-        var final_str = '';
-        for (ele in result){
-            final_str += result[ele]['text'] + " "
-        }
-        transcript_id_content.innerHTML = final_str;
-        
-        $.ajax({
 
+    function fetchTopics(server, topic_endpoint, final_str){
+        $.ajax({
             type:"POST",
             url: server + topic_endpoint,
             dataType: "json",
@@ -76,8 +90,7 @@ window.onload = function(){
             transcript_id_content.innerHTML = final_str;
         }
 
-    // replace duration notations with whitespace
-
+    ///////////// Button functions /////////////
     button_options.addEventListener('click', onclick_options, false);
     button_download.addEventListener('click', onclick_download, false);
     button_keywords.addEventListener('click', onclick_keywords, false);
@@ -85,30 +98,14 @@ window.onload = function(){
 
     function onclick_keywords(){
         if(!keywords_clicked){
-            str_keywords = str_clean.replace(/Flox/, '<a href="https://en.wikipedia.org/wiki/Flox" target="_blank" style="color:red;">Flox</a>');
-            str_keywords = str_keywords.replace(/skydiver/, '<a href="https://en.wikipedia.org/wiki/Skydiver_(disambiguation)" target="_blank" style="color:red;">skydiver</a>');
-            str_keywords = str_keywords.replace(/parachute/, '<a href="https://en.wikipedia.org/wiki/Parachute" target="_blank" style="color:red;">parachute</a>');
-            str_keywords = str_keywords.replace(/function/, '<a href="https://en.wikipedia.org/wiki/function" target="_blank" style="color:red;">function</a>');
-            str_keywords = str_keywords.replace(/terminal velocity/, '<a href="https://en.wikipedia.org/wiki/Terminal_velocity" target="_blank" style="color:red;">terminal velocity</a>');
-            str_keywords = str_keywords.replace(/expression/, '<a href="https://en.wikipedia.org/wiki/Expression_(mathematics)" target="_blank" style="color:red;">expression</a>');
-            str_keywords = str_keywords.replace(/square root/, '<a href="https://en.wikipedia.org/wiki/Square_root" target="_blank" style="color:red;">square root</a>');
-
-            transcript_id_content.innerHTML = str_keywords;
+            button_keywords.innerHTML = "Remove keywords";
             keywords_clicked = true;
+            getTab(keywords_clicked);
         } else if(keywords_clicked){
-            transcript_id_content.innerHTML = str_clean;
+            button_keywords.innerHTML = "Add keywords";
             keywords_clicked = false;
+            getTab(keywords_clicked);
         }
-    // replace word from regex with hyperlink + color
-
-    // multiple words need splitting:
-    // var toStr = String(reg);
-    // var color = (toStr.replace('\/g', '|')).substring(1);
-    // var colors = color.split("|");
-
-    // if (colors.indexOf("red") > -1) {
-    //     str = str.replace(/chrome/g, '<span style="color:red;">red</span>');
-    // }
     }
 
     function onclick_options(){
@@ -118,28 +115,30 @@ window.onload = function(){
         var options_menu = document.getElementById("options_menu");
 
         if(!options_clicked){
+            button_options.innerHTML = "Close options";
             options_menu.style.display = "block";
             button_wrapper.style.padding = "0.5em 0 0 0";
             options_clicked = true;
         } else if (options_clicked){
+            button_options.innerHTML = "Options";
             options_menu.style.display = "none";
             button_wrapper.style.padding = "0.5em 0.5em 0.5em 0.5em";
             options_clicked = false;
         }
-        
-        //chrome.windows.create({url: chrome.extension.getURL("../options.html"), type: "popup", top:0, left: 0, width: 600, height: 300});
     }
 
     function onclick_about(){
         if(!about_clicked){
+            button_about.innerHTML = "Transcript";
             transcript_id_content.innerHTML = "About us...";
             about_clicked = true;
             
         } else if (about_clicked){
+            button_about.innerHTML = "About";
             if(!keywords_clicked){
-                transcript_id_content.innerHTML = str_clean;
+                getTab(keywords_clicked);
             } else if(keywords_clicked){
-                transcript_id_content.innerHTML = str_keywords
+                getTab(keywords_clicked);
             }
             about_clicked = false;
         }
@@ -148,16 +147,17 @@ window.onload = function(){
 
     function onclick_font(){
         if(!big_font){
+            button_font.innerHTML = "Smaller font";
             transcript_id_content.style.fontSize = "120%";
             big_font = true;
         } else if(big_font){
+            button_font.innerHTML = "Bigger font";
             transcript_id_content.style.fontSize = "100%";
             big_font = false;
         }
     }
 
     function onclick_dark_light(){
-
         if(!dark_mode){
             button_dark_light.innerHTML = 'Light mode';
             dark_mode = true;
@@ -177,15 +177,20 @@ window.onload = function(){
     }
 
     function onclick_download(){
+        download_clicked = true;
+        getTab(keywords_clicked, download_clicked);
+    }
+
+    function download_transcript(text){
         var filename = "transcript.txt";
         var element = document.createElement('a');
 
-        element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(str_clean));
+        element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(text));
         element.setAttribute('download', filename);
          
         element.style.display = 'none';
         document.body.appendChild(element);
-          
+        
         element.click();
           
         document.body.removeChild(element);
