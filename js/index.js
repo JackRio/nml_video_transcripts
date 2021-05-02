@@ -27,7 +27,7 @@ window.onload = function(){
     chrome.tabs.query({'active': true}, function (tabs) {
         info = {'url':tabs[0].url};
         fetchTranscripts(server, transcript_endpoint, info)
-        fetchTopics(server, topic_endpoint, info)
+        
     });
 
     function fetchTranscripts(server, transcript_endpoint, info) {
@@ -40,30 +40,41 @@ window.onload = function(){
             contentType: "application/json;charset=UTF-8",
             success: function(res){
                   result = res['__transcript'];
-                  postTranscript(result)
+                  fetchTopics(server, topic_endpoint, info, result)
                 }
             });
     }
-    function fetchTopics(server, topic_endpoint, info){
+    function fetchTopics(server, topic_endpoint, info, result){
+        var final_str = '';
+        for (ele in result){
+            final_str += result[ele]['text'] + " "
+        }
+        transcript_id_content.innerHTML = final_str;
+        
         $.ajax({
 
             type:"POST",
             url: server + topic_endpoint,
             dataType: "json",
             contentType: "application/json;charset=UTF-8",
-            success: function(res){
-                console.log('topics: ', res);
+            success: function(topics){
+                console.log('topics: ', topics);
+                postTranscript(topics, final_str);
                 }
             });
     }
 
-    function postTranscript(result){
-        var final_str = '';
-        for (ele in result){
-            final_str += result[ele]['text'] + " "
+    function postTranscript(topics, final_str){
+            console.log('top str: ', topics);
+            for (ele in topics){
+                topic_name = ele;
+                url = topics[topic_name]
+                console.log('url', url)
+                console.log('name', topic_name);
+                final_str = final_str.replace(topic_name, '<a href='+ url + ' target="_blank" style="color:red;">' + topic_name + '</a>');
+            }
+            transcript_id_content.innerHTML = final_str;
         }
-        transcript_id_content.innerHTML = final_str;
-    }
 
     // replace duration notations with whitespace
 
