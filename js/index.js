@@ -43,11 +43,8 @@ window.onload = function(){
             contentType: "application/json;charset=UTF-8",
             success: function(res){
                 result = res['__transcript'];
-                var final_str = '';
-
-                for (ele in result){
-                    final_str += result[ele]['text'] + " "
-                }
+                current_time = 51.467;
+                final_str = useTimeStamp(result,current_time);
                 transcript_id_content.innerHTML = final_str;
                 
                 if(keywords_clicked){
@@ -63,6 +60,22 @@ window.onload = function(){
                 }
                 }
             });
+    }
+
+    function useTimeStamp(result,time){
+        final_str = "";
+        for (ele in result){
+            start_time = result[ele]['start'];
+            end_time = start_time + result[ele]['duration'];
+            
+            if(time >= start_time && time <= end_time){
+                final_str += '<a target="_blank" style="color:blue;font-weight:bold">' + result[ele]['text'] + '</a>' + " ";
+            }
+            else{
+                final_str += result[ele]['text'] + " ";
+            }
+        }
+        return final_str;
     }
 
     function fetchTopics(server, topic_endpoint, final_str){
