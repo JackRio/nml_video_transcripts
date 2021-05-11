@@ -22,7 +22,49 @@ window.onload = function(){
     var transcript_id_content = document.getElementById("transcript");
     var button_wrapper = document.getElementById("button-wrapper");
     var button_about = document.getElementById("button_about");
-   
+    var video_id;
+    var player = document.getElementById("player");
+
+    // var tag = document.createElement('script');
+    // tag.id = 'iframe-demo';
+    // tag.src = 'https://www.youtube.com/iframe_api';
+    // var firstScriptTag = document.getElementsByTagName('script')[0];
+    // firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+  
+    // var player;
+    // function onYouTubeIframeAPIReady() {
+    //   player = new YT.Player('player', {
+    //       events: {
+    //         'onReady': onPlayerReady,
+    //         'onStateChange': onPlayerStateChange
+    //       }
+    //   });
+    // }
+    // function onPlayerReady(event) {
+    //   document.getElementById('player').style.borderColor = '#FF6D00';
+    // }
+    // function changeBorderColor(playerStatus) {
+    //   var color;
+    //   if (playerStatus == -1) {
+    //     color = "#37474F"; // unstarted = gray
+    //   } else if (playerStatus == 0) {
+    //     color = "#FFFF00"; // ended = yellow
+    //   } else if (playerStatus == 1) {
+    //     color = "#33691E"; // playing = green
+    //   } else if (playerStatus == 2) {
+    //     color = "#DD2C00"; // paused = red
+    //   } else if (playerStatus == 3) {
+    //     color = "#AA00FF"; // buffering = purple
+    //   } else if (playerStatus == 5) {
+    //     color = "#FF6DOO"; // video cued = orange
+    //   }
+    //   if (color) {
+    //     document.getElementById('player').style.borderColor = color;
+    //   }
+    // }
+    // function onPlayerStateChange(event) {
+    //   changeBorderColor(event.data);
+    // }
 
     ///////////// Transcript functions /////////////
     getTab(keywords_clicked);
@@ -30,6 +72,7 @@ window.onload = function(){
     function getTab(keywords_clicked, download_clicked){
         chrome.tabs.query({'active': true}, function (tabs) {
             info = {'url':tabs[0].url};
+            video_id = urlToId(info.url);
             fetchTranscripts(server, transcript_endpoint, info, keywords_clicked, download_clicked);
         });
     }
@@ -42,7 +85,10 @@ window.onload = function(){
             dataType: "json",
             contentType: "application/json;charset=UTF-8",
             success: function(res){
+                player.src = "https://www.youtube.com/embed/"+video_id+"?enablejsapi=1&autoplay=1";
                 result = res['__transcript'];
+                console.log('player '+player);
+                // console.log(player.getCurrentTime());
                 current_time = 51.467;
                 final_str = useTimeStamp(result,current_time);
                 transcript_id_content.innerHTML = final_str;
@@ -78,6 +124,12 @@ window.onload = function(){
         return final_str;
     }
 
+    function urlToId(url){
+        var regExp = /^.*((youtu.be\/)|(v\/)|(\/u\/\w\/)|(embed\/)|(watch\?))\??v?=?([^#&?]*).*/;
+        var match = url.match(regExp);
+        return (match&&match[7].length==11)? match[7] : false;
+    }
+
     function fetchTopics(server, topic_endpoint, final_str){
         $.ajax({
             type:"POST",
@@ -95,13 +147,14 @@ window.onload = function(){
             console.log('top str: ', topics);
             for (ele in topics){
                 topic_name = ele;
-                url = topics[topic_name]
-                console.log('url', url)
+                url = topics[topic_name];
+                console.log('url', url);
                 console.log('name', topic_name);
                 final_str = final_str.replace(topic_name, '<a href='+ url + ' target="_blank" style="color:red;">' + topic_name + '</a>');
             }
             transcript_id_content.innerHTML = final_str;
         }
+
 
     ///////////// Button functions /////////////
     button_options.addEventListener('click', onclick_options, false);

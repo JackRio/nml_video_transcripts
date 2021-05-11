@@ -5,17 +5,20 @@ from youtube_transcript_api import YouTubeTranscriptApi
 
 class YoutubeURLTranscriptions:
 
-    @staticmethod
-    def url_to_transcipts(url):
-        video_id = re.search(r"v=(?P<video_id>[a-zA-Z\d_\-]+)", url).group(1)
+    def url_to_transcipts(self, url):
+        video_id = self.url_to_id(url)
         transcript = YouTubeTranscriptApi.get_transcript(video_id)
         return transcript
 
     def url_to_json(self, url):
-        video_id = re.search(r"v=(?P<video_id>[a-zA-Z\d_\-]+)", url).group(1)
+        video_id = self.url_to_id(url)
         transcript = YouTubeTranscriptApi.get_transcript(video_id)
         transcript = self.clean_transcripts(transcript)
         return transcript
+
+    @staticmethod
+    def url_to_id(url):
+        return re.search(r"v=(?P<video_id>[a-zA-Z\d_\-]+)", url).group(1)
 
     @staticmethod
     def clean_transcripts(transcript):
