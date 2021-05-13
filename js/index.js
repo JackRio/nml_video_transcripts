@@ -1,10 +1,7 @@
-/*
-Extract text, add hyperlinks and color the words red
-Remove time notations
-*/
 
 window.onload = function(){
-    var server = "http://127.0.0.1:5000";
+    var server = "http://donald.ai.ru.nl/";
+    // "http://127.0.0.1:5000";
     var transcript_endpoint = "/transcript";
     var topic_endpoint = '/topics';
     var summary_endpoint = '/summary'
@@ -22,51 +19,65 @@ window.onload = function(){
     var transcript_id_content = document.getElementById("transcript");
     var button_wrapper = document.getElementById("button-wrapper");
     var button_about = document.getElementById("button_about");
-    var video_id;
-    var player = document.getElementById("player");
+    var video_id = 'M7lc1UVf-VE';
 
-    // var tag = document.createElement('script');
-    // tag.id = 'iframe-demo';
-    // tag.src = 'https://www.youtube.com/iframe_api';
-    // var firstScriptTag = document.getElementsByTagName('script')[0];
-    // firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
-  
-    // var player;
-    // function onYouTubeIframeAPIReady() {
-    //   player = new YT.Player('player', {
-    //       events: {
-    //         'onReady': onPlayerReady,
-    //         'onStateChange': onPlayerStateChange
-    //       }
-    //   });
-    // }
-    // function onPlayerReady(event) {
-    //   document.getElementById('player').style.borderColor = '#FF6D00';
-    // }
-    // function changeBorderColor(playerStatus) {
-    //   var color;
-    //   if (playerStatus == -1) {
-    //     color = "#37474F"; // unstarted = gray
-    //   } else if (playerStatus == 0) {
-    //     color = "#FFFF00"; // ended = yellow
-    //   } else if (playerStatus == 1) {
-    //     color = "#33691E"; // playing = green
-    //   } else if (playerStatus == 2) {
-    //     color = "#DD2C00"; // paused = red
-    //   } else if (playerStatus == 3) {
-    //     color = "#AA00FF"; // buffering = purple
-    //   } else if (playerStatus == 5) {
-    //     color = "#FF6DOO"; // video cued = orange
-    //   }
-    //   if (color) {
-    //     document.getElementById('player').style.borderColor = color;
-    //   }
-    // }
-    // function onPlayerStateChange(event) {
-    //   changeBorderColor(event.data);
-    // }
+    ///////////// Embedded Video /////////////
+
+    var myTimer;
+    var tag = document.createElement('script');
+    tag.id = 'iframe-demo';
+    tag.src = 'https://www.youtube.com/iframe_api';
+    var firstScriptTag = document.getElementsByTagName('script')[0];
+    firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+    var ytplayer;
+    var result = '';
+    window.onYouTubePlayerAPIReady = function() {
+        ytplayer = new YT.Player('ytplayer', {
+          height: '360',
+          width: '640',
+          videoId: 'M7lc1UVf-VE',
+          events: {
+            "onReady": onPlayerReady,
+            "onStateChange": onPlayerStateChange
+            }
+        });
+      }
+    
+    function onPlayerReady(event) {
+        event.target.playVideo();
+        
+      }
+    function onPlayerStateChange(event){
+        if(event.data==1) {
+            myTimer = setInterval(function(){ 
+                var time;
+                time = ytplayer.getCurrentTime();
+                transcript_id_content.innerHTML = useTimeStamp(result,time);
+            }, 100);
+        }
+        else {
+            clearInterval(myTimer);
+        }
+    }
+    
+    function useTimeStamp(result,time){
+        final_str = "";
+        for (ele in result){
+            start_time = result[ele]['start'];
+            end_time = start_time + result[ele]['duration'];
+            
+            if(time >= start_time && time <= end_time){
+                final_str += '<a target="_blank" style="color:blue;font-weight:bold">' + result[ele]['text'] + '</a>' + " ";
+            }
+            else{
+                final_str += result[ele]['text'] + " ";
+            }
+        }
+        return final_str;
+    }
 
     ///////////// Transcript functions /////////////
+
     getTab(keywords_clicked);
 
     function getTab(keywords_clicked, download_clicked){
@@ -85,11 +96,9 @@ window.onload = function(){
             dataType: "json",
             contentType: "application/json;charset=UTF-8",
             success: function(res){
-                player.src = "https://www.youtube.com/embed/"+video_id+"?enablejsapi=1&autoplay=1";
+                ytplayer.loadVideoById(video_id);
                 result = res['__transcript'];
-                console.log('player '+player);
-                // console.log(player.getCurrentTime());
-                current_time = 51.467;
+                current_time = ytplayer.playerInfo.currentTime;
                 final_str = useTimeStamp(result,current_time);
                 transcript_id_content.innerHTML = final_str;
                 
@@ -106,22 +115,6 @@ window.onload = function(){
                 }
                 }
             });
-    }
-
-    function useTimeStamp(result,time){
-        final_str = "";
-        for (ele in result){
-            start_time = result[ele]['start'];
-            end_time = start_time + result[ele]['duration'];
-            
-            if(time >= start_time && time <= end_time){
-                final_str += '<a target="_blank" style="color:blue;font-weight:bold">' + result[ele]['text'] + '</a>' + " ";
-            }
-            else{
-                final_str += result[ele]['text'] + " ";
-            }
-        }
-        return final_str;
     }
 
     function urlToId(url){
@@ -157,6 +150,7 @@ window.onload = function(){
 
 
     ///////////// Button functions /////////////
+    
     button_options.addEventListener('click', onclick_options, false);
     button_download.addEventListener('click', onclick_download, false);
     button_keywords.addEventListener('click', onclick_keywords, false);
