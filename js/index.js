@@ -31,17 +31,6 @@ window.onload = function(){
     firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
     var ytplayer;
     var result = '';
-    window.onYouTubePlayerAPIReady = function() {
-        ytplayer = new YT.Player('ytplayer', {
-          height: '360',
-          width: '640',
-          videoId: 'M7lc1UVf-VE',
-          events: {
-            "onReady": onPlayerReady,
-            "onStateChange": onPlayerStateChange
-            }
-        });
-      }
     
     function onPlayerReady(event) {
         event.target.playVideo();
@@ -84,6 +73,17 @@ window.onload = function(){
         chrome.tabs.query({'active': true}, function (tabs) {
             info = {'url':tabs[0].url};
             video_id = urlToId(info.url);
+            window.onYouTubePlayerAPIReady = function() {
+                ytplayer = new YT.Player('ytplayer', {
+                  height: '360',
+                  width: '640',
+                  videoId: video_id,
+                  events: {
+                    "onReady": onPlayerReady,
+                    "onStateChange": onPlayerStateChange
+                    }
+                });
+              }
             fetchTranscripts(server, transcript_endpoint, info, keywords_clicked, download_clicked);
         });
     }
@@ -96,7 +96,6 @@ window.onload = function(){
             dataType: "json",
             contentType: "application/json;charset=UTF-8",
             success: function(res){
-                ytplayer.loadVideoById(video_id);
                 result = res['__transcript'];
                 current_time = ytplayer.playerInfo.currentTime;
                 final_str = useTimeStamp(result,current_time);
