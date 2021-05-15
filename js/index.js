@@ -19,6 +19,7 @@ window.onload = function(){
     var transcript_id_content = document.getElementById("transcript");
     var button_wrapper = document.getElementById("button-wrapper");
     var button_about = document.getElementById("button_about");
+    var extopics = [];
     var video_id = 'M7lc1UVf-VE';
 
     ///////////// Embedded Video /////////////
@@ -62,7 +63,7 @@ window.onload = function(){
                 final_str += result[ele]['text'] + " ";
             }
         }
-        return final_str;
+        return postTranscript(extopics,final_str);
     }
 
     ///////////// Transcript functions /////////////
@@ -97,7 +98,7 @@ window.onload = function(){
             contentType: "application/json;charset=UTF-8",
             success: function(res){
                 result = res['__transcript'];
-                current_time = ytplayer.playerInfo.currentTime;
+                current_time = 0;
                 final_str = useTimeStamp(result,current_time);
                 transcript_id_content.innerHTML = final_str;
                 
@@ -130,7 +131,8 @@ window.onload = function(){
             contentType: "application/json;charset=UTF-8",
             success: function(topics){
                 console.log('topics: ', topics);
-                postTranscript(topics, final_str);
+                extopics = topics;
+                // postTranscript(topics, final_str);
                 }
             });
     }
@@ -144,7 +146,9 @@ window.onload = function(){
                 console.log('name', topic_name);
                 final_str = final_str.replace(topic_name, '<a href='+ url + ' target="_blank" style="color:red;">' + topic_name + '</a>');
             }
-            transcript_id_content.innerHTML = final_str;
+            // result = topic_str;
+            // transcript_id_content.innerHTML = final_str;
+            return final_str;
         }
 
 
