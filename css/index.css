@@ -53,3 +53,19 @@ button {
   display: none;
   text-align: center;
 }
+
+a:link {
+  color: lightskyblue;
+}
+
+a:visited{
+  color: lightskyblue;
+}
+
+a:hover{
+  color: red;
+}
+
+a:active{
+  color: lightskyblue;
+}
