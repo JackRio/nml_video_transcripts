@@ -21,6 +21,27 @@ window.onload = function(){
     var button_about = document.getElementById("button_about");
     var extopics = [];
     var video_id = 'M7lc1UVf-VE';
+    var dictionary = {};
+    var target_var;
+
+    function objToString(dictionary){
+        var str = '';
+        for (const[name, nr] of Object.entries(dictionary)){
+            str += name + ': ' + nr + ', ';
+        }
+            
+        console.log(str);
+        return str;
+    }
+
+    window.addEventListener("beforeunload", function (e) {
+        dictionary = objToString(dictionary);
+        download("click-rate.txt", dictionary);
+        var confirmationMessage = "\o/";
+    
+        (e || window.event).returnValue = confirmationMessage;     //Gecko + IE
+        return confirmationMessage;                                //Webkit, Safari, Chrome etc.
+    });
 
     ///////////// Embedded Video /////////////
 
@@ -35,8 +56,8 @@ window.onload = function(){
     
     function onPlayerReady(event) {
         event.target.playVideo();
-        
-      }
+    }
+
     function onPlayerStateChange(event){
         if(event.data==1) {
             myTimer = setInterval(function(){ 
@@ -57,7 +78,7 @@ window.onload = function(){
             end_time = start_time + result[ele]['duration'];
             
             if(time >= start_time && time <= end_time){
-                final_str += '<a target="_blank" style="color:blue;font-weight:bold">' + result[ele]['text'] + '</a>' + " ";
+                final_str += '<a target="_blank" style="color:orange;font-weight:bold">' + result[ele]['text'] + '</a>' + " ";
             }
             else{
                 final_str += result[ele]['text'] + " ";
@@ -151,6 +172,31 @@ window.onload = function(){
             return final_str;
         }
 
+    
+    function clickOrigin(e){
+        target_var = e.target;
+        var tag = [];
+        tag.tagType = target_var.tagName.toLowerCase();
+        tag.tagClass = target_var.className.split(' ');
+        tag.id = target_var.id;
+        tag.parent = target_var.parentNode.tagName.toLowerCase();
+            
+        return tag;
+    }
+            
+    document.body.onclick = function(e){
+        elem = clickOrigin(e);
+        text = target_var.innerHTML;
+        if (elem.tagType == 'a'){
+            if (dictionary["" + (text) + ""] == null){
+                dictionary["" + (text) + ""] = 1;
+            } else{
+                value = dictionary["" + (text) + ""]
+                dictionary["" + (text) + ""] = value+1;
+            }
+            console.log(dictionary)
+        }
+    }
 
     ///////////// Button functions /////////////
     
@@ -244,8 +290,7 @@ window.onload = function(){
         getTab(keywords_clicked, download_clicked);
     }
 
-    function download_transcript(text){
-        var filename = "transcript.txt";
+    function download(filename, text){
         var element = document.createElement('a');
 
         element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(text));

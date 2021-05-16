@@ -14,7 +14,7 @@ document.addEventListener('DOMContentLoaded', function(){
     function onclick(){
         chrome.tabs.query({active: true, currentWindow: true}, 
         function(tabs) {
-            chrome.windows.create({url: chrome.extension.getURL("../index.html"), type: "popup", top:20, left: 30, width: 600, height: 300});
+            chrome.windows.create({url: chrome.extension.getURL("../index.html"), type: "popup", top:20, left: 30, width: 800, height: 600});
         });
     }
 }, false)
