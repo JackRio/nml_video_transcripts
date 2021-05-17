@@ -130,9 +130,7 @@ window.onload = function(){
             dataType: "json",
             contentType: "application/json;charset=UTF-8",
             success: function(topics){
-                console.log('topics: ', topics);
                 extopics = topics;
-                // postTranscript(topics, final_str);
                 }
             });
     }
@@ -142,12 +140,10 @@ window.onload = function(){
             for (ele in topics){
                 topic_name = ele;
                 url = topics[topic_name];
-                console.log('url', url);
-                console.log('name', topic_name);
+                // console.log('url', url);
+                // console.log('name', topic_name);
                 final_str = final_str.replace(topic_name, '<a href='+ url + ' target="_blank" style="color:red;">' + topic_name + '</a>');
             }
-            // result = topic_str;
-            // transcript_id_content.innerHTML = final_str;
             return final_str;
         }
 
