@@ -1,7 +1,6 @@
 
 window.onload = function(){
     var server = "http://donald.ai.ru.nl/";
-    // "http://127.0.0.1:5000";
     var transcript_endpoint = "/transcript";
     var topic_endpoint = '/topics';
     var summary_endpoint = '/summary'
@@ -63,7 +62,19 @@ window.onload = function(){
             myTimer = setInterval(function(){ 
                 var time;
                 time = ytplayer.getCurrentTime();
-                transcript_id_content.innerHTML = useTimeStamp(result,time);
+                final_str = useTimeStamp(result,time);
+                if(keywords_clicked){
+                    // console.log('Keywords on');
+                    transcript_id_content.innerHTML = postTranscript(extopics, final_str);
+                } else {
+                    // console.log('Keywords off');
+                    transcript_id_content.innerHTML = final_str; 
+                }
+
+                if(download_clicked){
+                    download_clicked = false;
+                    download_transcript(final_str);
+                }          
             }, 100);
         }
         else {
@@ -84,7 +95,7 @@ window.onload = function(){
                 final_str += result[ele]['text'] + " ";
             }
         }
-        return postTranscript(extopics,final_str);
+        return final_str;
     }
 
     ///////////// Transcript functions /////////////
@@ -107,6 +118,7 @@ window.onload = function(){
                 });
               }
             fetchTranscripts(server, transcript_endpoint, info, keywords_clicked, download_clicked);
+            fetchTopics(server, topic_endpoint);
         });
     }
 
@@ -119,21 +131,8 @@ window.onload = function(){
             contentType: "application/json;charset=UTF-8",
             success: function(res){
                 result = res['__transcript'];
-                current_time = 0;
-                final_str = useTimeStamp(result,current_time);
+                final_str = useTimeStamp(result,0);
                 transcript_id_content.innerHTML = final_str;
-                
-                if(keywords_clicked){
-                    console.log('Keywords on');
-                    fetchTopics(server, topic_endpoint, final_str);
-                } else {
-                    console.log('Keywords off');
-                }
-
-                if(download_clicked){
-                    download_clicked = false;
-                    download_transcript(final_str);
-                }
                 }
             });
     }
@@ -144,7 +143,7 @@ window.onload = function(){
         return (match&&match[7].length==11)? match[7] : false;
     }
 
-    function fetchTopics(server, topic_endpoint, final_str){
+    function fetchTopics(server, topic_endpoint){
         $.ajax({
             type:"POST",
             url: server + topic_endpoint,
@@ -161,8 +160,6 @@ window.onload = function(){
             for (ele in topics){
                 topic_name = ele;
                 url = topics[topic_name];
-                // console.log('url', url);
-                // console.log('name', topic_name);
                 final_str = final_str.replace(topic_name, '<a href='+ url + ' target="_blank" style="color:red;">' + topic_name + '</a>');
             }
             return final_str;
