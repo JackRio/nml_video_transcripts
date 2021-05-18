@@ -156,11 +156,10 @@ window.onload = function(){
     }
 
     function postTranscript(topics, final_str){
-            // console.log('top str: ', topics);
             for (ele in topics){
                 topic_name = ele;
                 url = topics[topic_name];
-                final_str = final_str.replace(topic_name, '<a href='+ url + ' target="_blank" style="color:red;">' + topic_name + '</a>');
+                final_str = final_str.replace(topic_name, '<a href='+ url + ' id="url_color" target="_blank">' + topic_name + '</a>');
             }
             return final_str;
         }
