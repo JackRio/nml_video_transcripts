@@ -18,6 +18,8 @@ window.onload = function(){
     var transcript_id_content = document.getElementById("transcript");
     var button_wrapper = document.getElementById("button-wrapper");
     var button_about = document.getElementById("button_about");
+    var transcript = document.getElementById("transcript");
+    var ytplayer = document.getElementById("ytplayer");
     var extopics = [];
     var video_id = 'M7lc1UVf-VE';
     var dictionary = {};
@@ -64,16 +66,14 @@ window.onload = function(){
                 time = ytplayer.getCurrentTime();
                 final_str = useTimeStamp(result,time);
                 if(keywords_clicked){
-                    // console.log('Keywords on');
                     transcript_id_content.innerHTML = postTranscript(extopics, final_str);
                 } else {
-                    // console.log('Keywords off');
                     transcript_id_content.innerHTML = final_str; 
                 }
 
                 if(download_clicked){
                     download_clicked = false;
-                    download_transcript(final_str);
+                    download("transcript.txt", final_str);
                 }          
             }, 100);
         }
@@ -218,12 +218,10 @@ window.onload = function(){
         if(!options_clicked){
             button_options.innerHTML = "Close options";
             options_menu.style.display = "block";
-            button_wrapper.style.padding = "0.5em 0 0 0";
             options_clicked = true;
         } else if (options_clicked){
             button_options.innerHTML = "Options";
             options_menu.style.display = "none";
-            button_wrapper.style.padding = "0.5em 0.5em 0.5em 0.5em";
             options_clicked = false;
         }
     }
