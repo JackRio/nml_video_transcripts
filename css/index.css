@@ -1,22 +1,107 @@
+@import url('https://fonts.googleapis.com/css?family=Raleway:300,400');
+
 body {
   background-color: rgb(233, 233, 233);
+  font-family: 'Arial', sans-serif;
+}
+
+h1{
+  color: rgb(97, 97, 97);
+  font-size: .9em;
+  letter-spacing: 1.5px;
 }
 
 button {
-  padding: 5px;
-  border: 0.1rem solid #d3d3d3;
-  border-radius: 4px;
+  display: inline-flex;
+  position: relative;
+  height: 10%;
+  width: 20%;
+  border: 2px solid #afafaf;
+  border-radius: 6px;
+  color: #afafaf;
+  text-decoration: none;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
 }
 
-.button-wrapper {
+#button_keywords{
+  top: 10%;
+  height: 70%;
+}
+
+#button_font{
+  top: 10%;
+  height: 70%;
+}
+
+#button_dark_light{
+  top: 10%;
+  height: 70%;
+}
+
+#button_start{
+  display: inline-flex;
+  position: relative;
+  height: 60%;
+  width: 95%;
+  border: 2px solid #afafaf;
+  border-radius: 5px;
+  color: #afafaf;
+  text-decoration: none;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+#button_about:hover #underline {
+  left: 0;
+}
+
+#button_options:hover #underline {
+  left: 0;
+}
+
+#button_download:hover #underline {
+  left: 0;
+}
+
+#button_start:hover #underline {
+  left: 0;
+}
+
+#button_keywords:hover #underline {
+  left: 0;
+}
+
+#button_font:hover #underline {
+  left: 0;
+}
+
+#button_dark_light:hover #underline {
+  left: 0;
+}
+
+#underline{
+  width: 100%;
+  height: 3px;
+  margin-top: 15px;
+  align-self: flex-end;
+  left: -200px;
+  background: #BFC0C0;
+  position: absolute;
+  transition: all .3s ease-Out;
+  bottom: 0;
+  z-index: 100;
+}
+
+.button_wrapper {
   position: fixed;
-  width: 98%;
-  height: 5%;
+  width: 100%;
   top: 0;
   left: 0;
   padding: 0.5em 0.5em 0.5em 0.5em;
   border: 0.1rem solid rgb(148, 148, 148);
-  border-radius: 4px;
   background-color: rgb(148, 148, 148);
   text-align: center;
   z-index: 100;
@@ -44,26 +129,27 @@ button {
 }
 
 .options_menu {
-  width: 98%;
-  height: 5%;
+  width: 100%;
+  height: 8%;
   position: fixed;
   left: 0;
-  top: 7.5%;
-  padding: 1em;
+  top: 9%;
+  padding: 0.5em;
   background-color: rgb(61, 61, 61);
   border: 0.1rem solid rgb(61, 61, 61);
-  border-radius: 4px;
   display: none;
   text-align: center;
+  align-items: center;
   z-index: 100;
 }
 
+
 a#url_color:link {
-  color: lightskyblue;
+  color: lightseagreen;
 }
 
 a#url_color:visited{
-  color: lightskyblue;
+  color: lightseagreen;
 }
 
 a#url_color:hover{
@@ -71,5 +157,5 @@ a#url_color:hover{
 }
 
 a#url_color:active{
-  color: lightskyblue;
+  color: lightseagreen;
 }

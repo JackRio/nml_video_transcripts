@@ -11,12 +11,19 @@ window.onload = function(){
     var options_clicked = false;
     var download_clicked = false;
     var about_clicked = false;
+    var h1_button_font = document.getElementById("h1_button_font");
     var button_font = document.getElementById("button_font");
+    var h1_button_dark_light = document.getElementById("h1_button_dark_light");
+    var button_dark_light = document.getElementById("button_dark_light");
+    var h1_button_options = document.getElementById("h1_button_options");
     var button_options = document.getElementById("button_options");
+    var h1_button_download = document.getElementById("h1_button_download");
     var button_download = document.getElementById("button_download");
+    var h1_button_keywords = document.getElementById("h1_button_keywords");
     var button_keywords = document.getElementById("button_keywords");
     var transcript_id_content = document.getElementById("transcript");
-    var button_wrapper = document.getElementById("button-wrapper");
+    var button_wrapper = document.getElementById("button_wrapper");
+    var h1_button_about = document.getElementById("h1_button_about");
     var button_about = document.getElementById("button_about");
     var transcript = document.getElementById("transcript");
     var ytplayer = document.getElementById("ytplayer");
@@ -199,28 +206,28 @@ window.onload = function(){
 
     function onclick_keywords(){
         if(!keywords_clicked){
-            button_keywords.innerHTML = "Remove keywords";
+            h1_button_keywords.innerHTML = "Remove keywords";
             keywords_clicked = true;
             getTab(keywords_clicked);
         } else if(keywords_clicked){
-            button_keywords.innerHTML = "Add keywords";
+            h1_button_keywords.innerHTML = "Add keywords";
             keywords_clicked = false;
             getTab(keywords_clicked);
         }
     }
 
     function onclick_options(){
-        document.getElementById("button_dark_light").addEventListener('click', onclick_dark_light, false);
-        document.getElementById("button_font").addEventListener('click', onclick_font, false);
+        document.getElementById("h1_button_dark_light").addEventListener('click', onclick_dark_light, false);
+        document.getElementById("h1_button_font").addEventListener('click', onclick_font, false);
        
         var options_menu = document.getElementById("options_menu");
 
         if(!options_clicked){
-            button_options.innerHTML = "Close options";
+            h1_button_options.innerHTML = "Close options";
             options_menu.style.display = "block";
             options_clicked = true;
         } else if (options_clicked){
-            button_options.innerHTML = "Options";
+            h1_button_options.innerHTML = "Options";
             options_menu.style.display = "none";
             options_clicked = false;
         }
@@ -228,12 +235,12 @@ window.onload = function(){
 
     function onclick_about(){
         if(!about_clicked){
-            button_about.innerHTML = "Transcript";
+            h1_button_about.innerHTML = "Transcript";
             transcript_id_content.innerHTML = "About us...";
             about_clicked = true;
             
         } else if (about_clicked){
-            button_about.innerHTML = "About";
+            h1_button_about.innerHTML = "About";
             if(!keywords_clicked){
                 getTab(keywords_clicked);
             } else if(keywords_clicked){
@@ -246,11 +253,11 @@ window.onload = function(){
 
     function onclick_font(){
         if(!big_font){
-            button_font.innerHTML = "Smaller font";
+            h1_button_font.innerHTML = "Smaller font";
             transcript_id_content.style.fontSize = "120%";
             big_font = true;
         } else if(big_font){
-            button_font.innerHTML = "Bigger font";
+            h1_button_font.innerHTML = "Bigger font";
             transcript_id_content.style.fontSize = "100%";
             big_font = false;
         }
@@ -258,20 +265,19 @@ window.onload = function(){
 
     function onclick_dark_light(){
         if(!dark_mode){
-            button_dark_light.innerHTML = 'Light mode';
+            h1_button_dark_light.innerHTML = 'Light mode';
             dark_mode = true;
             document.body.style.backgroundColor = 'rgb(80, 80, 80)';
             button_wrapper.style.backgroundColor = 'rgb(50, 50, 50)';
             button_wrapper.style.borderColor = 'rgb(50, 50, 50)';
-            document.body.style.color = 'white';
+            document.body.style.color = 'rgb(233, 233, 233)';
         } else if(dark_mode){
-            button_dark_light.innerHTML = 'Dark mode';
+            h1_button_dark_light.innerHTML = 'Dark mode';
             dark_mode = false;
-            document.body.style.backgroundColor = 'white';
+            document.body.style.backgroundColor = 'rgb(233, 233, 233)';
             button_wrapper.style.backgroundColor = 'rgb(148, 148, 148)';
             button_wrapper.style.borderColor = 'rgb(148, 148, 148)';
             document.body.style.color = 'black';
-
         }
     }
 
