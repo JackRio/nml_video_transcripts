@@ -1,4 +1,6 @@
 from flask import Flask, request
+import os
+import json
 
 from transcripts.api import topic_extraction, youtube_api, wiki_api
 
@@ -64,6 +66,23 @@ def send_summary():
     else:
         response = {'summary': web_obj.captions}
         return response
+
+
+@app.route('/click_rate', methods=['GET', 'POST'])
+def click_rate():
+    if request.method == 'POST':
+        click_rate = request.get_json()
+        if not os.path.exists('./click_rate/'):
+            os.mkdir('./click_rate')
+            with open('./click_rate/rate.json', 'w') as f:
+                json.dump(click_rate, f)
+        else:
+            with open('./click_rate/rate.json', 'r+') as f:
+                data = json.load(f)
+                data['click_rates'].append(click_rate)
+                f.seek(0)
+                json.dump(data, f)
+        return 'Success'
 
 
 if __name__ == '__main__':
