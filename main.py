@@ -1,6 +1,7 @@
-from flask import Flask, request
-import os
 import json
+import os
+
+from flask import Flask, request
 
 from transcripts.api import topic_extraction, youtube_api, wiki_api
 
@@ -70,19 +71,18 @@ def send_summary():
 
 @app.route('/click_rate', methods=['GET', 'POST'])
 def click_rate():
-    if request.method == 'POST':
-        click_rate = request.get_json()
-        if not os.path.exists('./click_rate/'):
-            os.mkdir('./click_rate')
-            with open('./click_rate/rate.json', 'w') as f:
-                json.dump(click_rate, f)
-        else:
+    try:
+        if request.method == 'POST':
+            click_rate_data = request.get_json()
             with open('./click_rate/rate.json', 'r+') as f:
                 data = json.load(f)
-                data['click_rates'].append(click_rate)
+                data['click_rates'].append(click_rate_data)
                 f.seek(0)
                 json.dump(data, f)
-        return 'Success'
+            return 'Success'
+
+    except Exception:
+        return "Failed to store"
 
 
 if __name__ == '__main__':
