@@ -16,6 +16,6 @@
         "default_popup": "button.html",
         "default_title": "Video Transcript"
     },
-    "content_security_policy": "script-src 'self' https://ajax.googleapis.com; object-src 'self'"
+    "content_security_policy": "script-src 'self' https://www.youtube.com/ https://ajax.googleapis.com; object-src 'self'"
     
 }
