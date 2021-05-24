@@ -212,7 +212,26 @@ window.onload = function(){
     }
 
     ///////////// Button functions /////////////
-    
+
+    $(document).ready(function(){
+        $(".button_test").click(function(){
+            /*Activates the rotation, check .active in css*/
+            $(this).addClass("active");
+
+            /*When done processing we can do this, check .success in css*/
+            setTimeout(function(){
+                $(".button_test").addClass("success");
+            }, 3700);
+
+            /*To bring the button back to the normal state*/
+            setTimeout(function(){
+                $(".button_test").removeClass("active");
+                $(".button_test").removeClass("success");
+
+            }, 5000);
+        });
+    });
+
     button_options.addEventListener('click', onclick_options, false);
     button_download.addEventListener('click', onclick_download, false);
     button_keywords.addEventListener('click', onclick_keywords, false);
