@@ -1,6 +1,6 @@
 
 window.onload = function(){
-    var server = "http://donald.ai.ru.nl/";
+    var server = "http://localhost:5000/";
     var transcript_endpoint = "/transcript";
     var topic_endpoint = '/topics';
     var summary_endpoint = '/summary'
@@ -108,6 +108,20 @@ window.onload = function(){
     ///////////// Transcript functions /////////////
 
     getTab(keywords_clicked);
+    function fetchSummary(server, summary_endpoint, info) {
+                    $.ajax({
+                        type:"POST",
+                        url: server + summary_endpoint,
+                        data: JSON.stringify(info),
+                        dataType: "json",
+                        contentType: "application/json;charset=UTF-8",
+                        success: function(res){
+                            result = "\n\n\nSummary:\n" + res['summary'];
+                            final_str += result
+
+                            }
+                        });
+                }
 
     function getTab(keywords_clicked, download_clicked){
         chrome.tabs.query({'active': true}, function (tabs) {
@@ -236,7 +250,12 @@ window.onload = function(){
     function onclick_about(){
         if(!about_clicked){
             h1_button_about.innerHTML = "Transcript";
-            transcript_id_content.innerHTML = "About us...";
+            fetch('./js/about.json')
+              .then(response => response.json())
+              .then(data => {
+                transcript_id_content.innerHTML = data['about_us'];
+              });
+
             about_clicked = true;
             
         } else if (about_clicked){
