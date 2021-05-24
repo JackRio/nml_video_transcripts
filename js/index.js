@@ -107,7 +107,7 @@ window.onload = function(){
 
     ///////////// Transcript functions /////////////
 
-    getTab(keywords_clicked);
+    window.onload = getTab(keywords_clicked);
     function fetchSummary(server, summary_endpoint, info) {
                     $.ajax({
                         type:"POST",
@@ -143,19 +143,21 @@ window.onload = function(){
         });
     }
 
-    function fetchTranscripts(server, transcript_endpoint, info, keywords_clicked) {
+    function fetchTranscripts(server, transcript_endpoint, info, keywords_clicked, callback) {
         $.ajax({
             type:"POST",
             url: server + transcript_endpoint,
             data: JSON.stringify(info),
             dataType: "json",
             contentType: "application/json;charset=UTF-8",
-            success: function(res){
-                result = res['__transcript'];
-                final_str = useTimeStamp(result,0);
-                transcript_id_content.innerHTML = final_str;
-                }
+            success: store_transcript
             });
+    }
+
+    function store_transcript(res){
+        result = res['__transcript'];
+        final_str = useTimeStamp(result,0);
+        transcript_id_content.innerHTML = final_str;
     }
 
     function urlToId(url){
@@ -170,10 +172,12 @@ window.onload = function(){
             url: server + topic_endpoint,
             dataType: "json",
             contentType: "application/json;charset=UTF-8",
-            success: function(topics){
-                extopics = topics;
-                }
+            success: topic_save
             });
+    }
+
+    function topic_save(topics){
+        extopics = topics;
     }
 
     function postTranscript(topics, final_str){
@@ -241,11 +245,11 @@ window.onload = function(){
         if(!keywords_clicked){
             h1_button_keywords.innerHTML = "Remove keywords";
             keywords_clicked = true;
-            getTab(keywords_clicked);
+//            getTab(keywords_clicked);
         } else if(keywords_clicked){
             h1_button_keywords.innerHTML = "Add keywords";
             keywords_clicked = false;
-            getTab(keywords_clicked);
+//            getTab(keywords_clicked);
         }
     }
 
@@ -280,9 +284,10 @@ window.onload = function(){
         } else if (about_clicked){
             h1_button_about.innerHTML = "About";
             if(!keywords_clicked){
-                getTab(keywords_clicked);
+//                getTab(keywords_clicked);
+                transcript_id_content.innerHTML = final_str;
             } else if(keywords_clicked){
-                getTab(keywords_clicked);
+                transcript_id_content.innerHTML = final_str;
             }
             about_clicked = false;
         }
@@ -321,7 +326,7 @@ window.onload = function(){
 
     function onclick_download(){
         download_clicked = true;
-        getTab(keywords_clicked, download_clicked);
+//        getTab(keywords_clicked, download_clicked);
     }
 
     function download(filename, text){
