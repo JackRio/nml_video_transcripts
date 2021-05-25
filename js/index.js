@@ -1,6 +1,6 @@
 
 window.onload = function(){
-    var server = "http://localhost:5000/";
+    var server = "http://donald.ai.ru.nl/";
     var transcript_endpoint = "/transcript";
     var topic_endpoint = '/topics';
     var summary_endpoint = '/summary'
@@ -27,6 +27,8 @@ window.onload = function(){
     var button_about = document.getElementById("button_about");
     var transcript = document.getElementById("transcript");
     var ytplayer = document.getElementById("ytplayer");
+    var check_img = document.getElementById("check");
+    var loading_img = document.getElementById("loading");
     var extopics = [];
     var video_id = 'M7lc1UVf-VE';
     var dictionary = {};
@@ -213,24 +215,24 @@ window.onload = function(){
 
     ///////////// Button functions /////////////
 
-    $(document).ready(function(){
-        $(".button_test").click(function(){
-            /*Activates the rotation, check .active in css*/
-            $(this).addClass("active");
+    // $(document).ready(function(){
+    //     $(".button_test").click(function(){
+    //         /*Activates the rotation, check .active in css*/
+    //         $(this).addClass("active");
 
-            /*When done processing we can do this, check .success in css*/
-            setTimeout(function(){
-                $(".button_test").addClass("success");
-            }, 3700);
+    //         /*When done processing we can do this, check .success in css*/
+    //         setTimeout(function(){
+    //             $(".button_test").addClass("success");
+    //         }, 3700);
 
-            /*To bring the button back to the normal state*/
-            setTimeout(function(){
-                $(".button_test").removeClass("active");
-                $(".button_test").removeClass("success");
+    //         /*To bring the button back to the normal state*/
+    //         setTimeout(function(){
+    //             $(".button_test").removeClass("active");
+    //             $(".button_test").removeClass("success");
 
-            }, 5000);
-        });
-    });
+    //         }, 5000);
+    //     });
+    // });
 
     button_options.addEventListener('click', onclick_options, false);
     button_download.addEventListener('click', onclick_download, false);
@@ -321,6 +323,17 @@ window.onload = function(){
 
     function onclick_download(){
         download_clicked = true;
+        check_img.style.display = "none";
+        loading_img.style.display = "inline-block";
+        setTimeout(function(){ 
+            loading_img.style.display = "none";
+            check_img.style.display = "inline-block"; 
+        }, 1000);
+        
+        setTimeout(function(){ 
+            check_img.style.display = "none";
+        }, 500);
+        
         getTab(keywords_clicked, download_clicked);
     }
 

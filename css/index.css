@@ -25,7 +25,50 @@
   overflow: hidden;
 }
 
-.active{
+#check{
+  position: relative;
+  background-color: transparent;
+  display: none;
+  display: relative;
+  width: 15%;
+  height: 70%;
+  z-index: 100;
+}
+
+#loading{
+  position: relative;
+  background-color: transparent;
+  display: none;
+  display: relative;
+  width: 15%;
+  height: 70%;
+  z-index: 100;
+}
+/*
+  @keyframes bounce{
+    0%{
+      transform: scale(0.9);
+  }
+} */
+/* 
+#active{
+  transition: all ease 0.5s;
+  background-color: transparent;
+  outline: none;
+  font-size: 0;
+  width: 30%;
+  height: 70%;
+  border-radius: 50%;
+  border-left-color: transparent;
+  animation: rotate 1.4s ease 0.5s infinite;
+}
+  @keyframes rotate{
+    0%{
+        transform: rotate(360deg);
+  }
+} */
+/* 
+#button_download.active{
     transition: all ease 0.5s;
     background-color: transparent;
     outline: none;
@@ -36,15 +79,10 @@
     border-left-color: transparent;
     animation: rotate 1.4s ease 0.5s infinite;
 }
-@keyframes rotate{
-    0%{
-        transform: rotate(360deg);
-    }
-}
 
-.success{
+
+#button_download.success{
     position: relative;
-    background: url(../js/check-solid.svg) no-repeat;
     background-color: #afafaf;
     animation: bounce .3s ease-in;
 }
@@ -53,7 +91,7 @@
         transform: scale(0.9);
     }
 }
-.success:before{
+#button_download.success:before{
     content: '';
     position: absolute;
     left: 0;
@@ -63,7 +101,7 @@
     height: 31px;
     line-height:31px;
     top: 8px;
-}
+} */
 
 #button_start{
   display: inline-flex;
