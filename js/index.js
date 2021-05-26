@@ -307,9 +307,8 @@ window.onload = function(){
 
     function onclick_hide(){
         if(!hide_clicked){
-
             img_hide.src = "../images/down.png";
-            button_wrapper.style.height = "1%";
+            button_wrapper.style.height = "2%";
             button_hide.style.height = "95%";
             button_about.style.display = "none";
             button_options.style.display = "none";
@@ -318,7 +317,7 @@ window.onload = function(){
             hide_clicked = true;
         } else if (hide_clicked){
             img_hide.src = "../images/up.png";
-            button_wrapper.style.height = "7%";
+            button_wrapper.style.height = "9%";
             button_hide.style.height = "35%";
             button_about.style.display = "inline-flex";
             button_options.style.display = "inline-flex";
