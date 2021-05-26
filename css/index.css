@@ -25,6 +25,34 @@
   overflow: hidden;
 }
 
+#button_hide{
+  position: absolute;
+  bottom: 1%;
+  right: 3%;
+  height: 35%;
+  width: 4%;
+  border: 2px solid #afafaf;
+  border-radius: 6px;
+  color: #afafaf;
+}
+
+#img_hide{
+  height: 100%;
+  width: 100%;
+  background-color: transparent;
+}
+
+.loading{
+  position: relative;
+  left: 8%;
+  background-color: transparent;
+  display: none;
+  display: relative;
+  width: 10%;
+  height: 70%;
+  z-index: 100;
+}
+
 #button_start{
   display: inline-flex;
   position: relative;
@@ -88,6 +116,7 @@
   left: 0;
   padding: 0.5em 0.5em 0.5em 0.5em;
   border: 0.1rem solid rgb(148, 148, 148);
+  border-radius: 0%;
   background-color: rgb(148, 148, 148);
   text-align: center;
   z-index: 100;
@@ -102,6 +131,7 @@
   padding: 0.5em;
   background-color: rgb(61, 61, 61);
   border: 0.1rem solid rgb(61, 61, 61);
+  border-radius: 0%;
   display: none;
   text-align: center;
   align-items: center;

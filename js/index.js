@@ -11,6 +11,7 @@ window.onload = function(){
     var options_clicked = false;
     var download_clicked = false;
     var about_clicked = false;
+    var hide_clicked = false;
     var h1_button_font = document.getElementById("h1_button_font");
     var button_font = document.getElementById("button_font");
     var h1_button_dark_light = document.getElementById("h1_button_dark_light");
@@ -27,6 +28,9 @@ window.onload = function(){
     var button_about = document.getElementById("button_about");
     var transcript = document.getElementById("transcript");
     var ytplayer = document.getElementById("ytplayer");
+    var loading_img = document.getElementById("loading_download");
+    var button_hide = document.getElementById("button_hide");
+    var img_hide = document.getElementById("img_hide");
     var extopics = [];
     var video_id = 'M7lc1UVf-VE';
     var dictionary = {};
@@ -108,6 +112,20 @@ window.onload = function(){
     ///////////// Transcript functions /////////////
 
     getTab(keywords_clicked);
+    function fetchSummary(server, summary_endpoint, info) {
+                    $.ajax({
+                        type:"POST",
+                        url: server + summary_endpoint,
+                        data: JSON.stringify(info),
+                        dataType: "json",
+                        contentType: "application/json;charset=UTF-8",
+                        success: function(res){
+                            result = "\n\n\nSummary:\n" + res['summary'];
+                            final_str += result
+
+                            }
+                        });
+                }
 
     function getTab(keywords_clicked, download_clicked){
         chrome.tabs.query({'active': true}, function (tabs) {
@@ -198,11 +216,12 @@ window.onload = function(){
     }
 
     ///////////// Button functions /////////////
-    
+
     button_options.addEventListener('click', onclick_options, false);
     button_download.addEventListener('click', onclick_download, false);
     button_keywords.addEventListener('click', onclick_keywords, false);
     button_about.addEventListener('click', onclick_about, false);
+    button_hide.addEventListener('click', onclick_hide, false);
 
     function onclick_keywords(){
         if(!keywords_clicked){
@@ -236,7 +255,12 @@ window.onload = function(){
     function onclick_about(){
         if(!about_clicked){
             h1_button_about.innerHTML = "Transcript";
-            transcript_id_content.innerHTML = "About us...";
+            fetch('./js/about.json')
+              .then(response => response.json())
+              .then(data => {
+                transcript_id_content.innerHTML = data['about_us'];
+              });
+
             about_clicked = true;
             
         } else if (about_clicked){
@@ -281,8 +305,43 @@ window.onload = function(){
         }
     }
 
+    function onclick_hide(){
+        if(!hide_clicked){
+
+            img_hide.src = "../images/down.png";
+            button_wrapper.style.height = "1%";
+            button_hide.style.height = "95%";
+            button_about.style.display = "none";
+            button_options.style.display = "none";
+            button_download.style.display = "none";
+            options_menu.style.display = "none";
+            hide_clicked = true;
+        } else if (hide_clicked){
+            img_hide.src = "../images/up.png";
+            button_wrapper.style.height = "7%";
+            button_hide.style.height = "35%";
+            button_about.style.display = "inline-flex";
+            button_options.style.display = "inline-flex";
+            button_download.style.display = "inline-flex";
+            
+            if(options_clicked){
+                h1_button_options.innerHTML = "Close options";
+                options_menu.style.display = "block";
+            } else if (!options_clicked){
+                h1_button_options.innerHTML = "Options";
+                options_menu.style.display = "none";
+            }
+            hide_clicked = false;
+        }
+    }
+
     function onclick_download(){
         download_clicked = true;
+        loading_img.style.display = "inline-block";
+        setTimeout(function(){ 
+            loading_img.style.display = "none";
+        }, 1000);
+        
         getTab(keywords_clicked, download_clicked);
     }
 
