@@ -31,10 +31,14 @@ window.onload = function(){
     var loading_img = document.getElementById("loading_download");
     var button_hide = document.getElementById("button_hide");
     var img_hide = document.getElementById("img_hide");
+    var button_ok = document.getElementById("button_ok");
+    var form_popup = document.getElementById("form_popup");
+    var options_menu = document.getElementById("options_menu");
     var extopics = [];
     var video_id = 'M7lc1UVf-VE';
     var dictionary = {};
     var target_var;
+    var user_id;
 
     function objToString(dictionary){
         var str = '';
@@ -46,14 +50,14 @@ window.onload = function(){
         return str;
     }
 
-    window.addEventListener("beforeunload", function (e) {
-        dictionary = objToString(dictionary);
-        download("click-rate.txt", dictionary);
-        var confirmationMessage = "\o/";
+    // window.addEventListener("beforeunload", function (e) {
+    //     dictionary = objToString(dictionary);
+    //     download("click-rate.txt", dictionary);
+    //     var confirmationMessage = "\o/";
     
-        (e || window.event).returnValue = confirmationMessage;     //Gecko + IE
-        return confirmationMessage;                                //Webkit, Safari, Chrome etc.
-    });
+    //     (e || window.event).returnValue = confirmationMessage;     //Gecko + IE
+    //     return confirmationMessage;                                //Webkit, Safari, Chrome etc.
+    // });
 
     ///////////// Embedded Video /////////////
 
@@ -222,6 +226,13 @@ window.onload = function(){
     button_keywords.addEventListener('click', onclick_keywords, false);
     button_about.addEventListener('click', onclick_about, false);
     button_hide.addEventListener('click', onclick_hide, false);
+    button_ok.addEventListener('click', onclick_popup, false);
+    button_dark_light.addEventListener('click', onclick_dark_light, false);
+    button_font.addEventListener('click', onclick_font, false);
+
+    function onclick_popup(){
+
+    }
 
     function onclick_keywords(){
         if(!keywords_clicked){
@@ -235,19 +246,42 @@ window.onload = function(){
         }
     }
 
-    function onclick_options(){
-        document.getElementById("h1_button_dark_light").addEventListener('click', onclick_dark_light, false);
-        document.getElementById("h1_button_font").addEventListener('click', onclick_font, false);
-       
-        var options_menu = document.getElementById("options_menu");
+    function showWrapper(){
+        button_about.style.display = "inline-flex";
+        button_download.style.display = "inline-flex";
+        button_options.style.display = "inline-flex";
+        button_wrapper.style.height = "9%";
+    }
+    
+    function hideWrapper(){
+        button_about.style.display = "none";
+        button_download.style.display = "none";
+        button_options.style.display = "none";
+        button_wrapper.style.height = "2%";
+    }
 
+    function showOptions(){
+        button_dark_light.style.display = "inline-flex";
+        button_font.style.display = "inline-flex";
+        button_keywords.style.display = "inline-flex";
+        options_menu.style.height = "9%";
+    }
+
+    function hideOptions(){
+        button_dark_light.style.display = "none";
+        button_font.style.display = "none";
+        button_keywords.style.display = "none";
+        options_menu.style.height = "0%";
+    }
+
+    function onclick_options(){
         if(!options_clicked){
             h1_button_options.innerHTML = "Close options";
-            options_menu.style.display = "block";
+            showOptions();
             options_clicked = true;
         } else if (options_clicked){
             h1_button_options.innerHTML = "Options";
-            options_menu.style.display = "none";
+            hideOptions();
             options_clicked = false;
         }
     }
@@ -308,27 +342,21 @@ window.onload = function(){
     function onclick_hide(){
         if(!hide_clicked){
             img_hide.src = "../images/down.png";
-            button_wrapper.style.height = "2%";
+            hideWrapper();
+            hideOptions();
             button_hide.style.height = "95%";
-            button_about.style.display = "none";
-            button_options.style.display = "none";
-            button_download.style.display = "none";
-            options_menu.style.display = "none";
             hide_clicked = true;
         } else if (hide_clicked){
             img_hide.src = "../images/up.png";
-            button_wrapper.style.height = "9%";
+            showWrapper();
             button_hide.style.height = "35%";
-            button_about.style.display = "inline-flex";
-            button_options.style.display = "inline-flex";
-            button_download.style.display = "inline-flex";
-            
+
             if(options_clicked){
                 h1_button_options.innerHTML = "Close options";
-                options_menu.style.display = "block";
+                showOptions();
             } else if (!options_clicked){
                 h1_button_options.innerHTML = "Options";
-                options_menu.style.display = "none";
+                hideOptions();
             }
             hide_clicked = false;
         }
