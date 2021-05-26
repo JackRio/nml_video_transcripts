@@ -104,6 +104,7 @@ window.onload = function(){
 
     ///////////// Transcript functions /////////////
 
+
     window.onload = initTranscript();
 
     function initTranscript(){
@@ -180,12 +181,12 @@ window.onload = function(){
         });
     }
 
-
     function urlToId(url){
         var regExp = /^.*((youtu.be\/)|(v\/)|(\/u\/\w\/)|(embed\/)|(watch\?))\??v?=?([^#&?]*).*/;
         var match = url.match(regExp);
         return (match&&match[7].length==11)? match[7] : false;
     }
+
     function postTranscript(topics, final_str){
             for (ele in topics){
                 topic_name = ele;
