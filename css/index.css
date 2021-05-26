@@ -25,44 +25,32 @@
   overflow: hidden;
 }
 
-.active{
-    transition: all ease 0.5s;
-    background-color: transparent;
-    outline: none;
-    font-size: 0;
-    width: 25px;
-    height: 25px;
-    border-radius: 50%;
-    border-left-color: transparent;
-    animation: rotate 1.4s ease 0.5s infinite;
-}
-@keyframes rotate{
-    0%{
-        transform: rotate(360deg);
-    }
+#button_hide{
+  position: absolute;
+  bottom: 1%;
+  right: 3%;
+  height: 35%;
+  width: 4%;
+  border: 2px solid #afafaf;
+  border-radius: 6px;
+  color: #afafaf;
 }
 
-.success{
-    position: relative;
-    background: url(../js/check-solid.svg) no-repeat;
-    background-color: #afafaf;
-    animation: bounce .3s ease-in;
+#img_hide{
+  height: 100%;
+  width: 100%;
+  background-color: transparent;
 }
-@keyframes bounce{
-    0%{
-        transform: scale(0.9);
-    }
-}
-.success:before{
-    content: '';
-    position: absolute;
-    left: 0;
-    right: 0;
-    margin: 0 auto;
-    width: 31px;
-    height: 31px;
-    line-height:31px;
-    top: 8px;
+
+.loading{
+  position: relative;
+  left: 8%;
+  background-color: transparent;
+  display: none;
+  display: relative;
+  width: 10%;
+  height: 70%;
+  z-index: 100;
 }
 
 #button_start{
@@ -128,6 +116,7 @@
   left: 0;
   padding: 0.5em 0.5em 0.5em 0.5em;
   border: 0.1rem solid rgb(148, 148, 148);
+  border-radius: 0%;
   background-color: rgb(148, 148, 148);
   text-align: center;
   z-index: 100;
@@ -142,6 +131,7 @@
   padding: 0.5em;
   background-color: rgb(61, 61, 61);
   border: 0.1rem solid rgb(61, 61, 61);
+  border-radius: 0%;
   display: none;
   text-align: center;
   align-items: center;
