@@ -1,15 +1,14 @@
 
 window.onload = function(){
-    var server = "http://donald.ai.ru.nl/";
+    var server = "http://localhost:5000";
     var transcript_endpoint = "/transcript";
     var topic_endpoint = '/topics';
     var summary_endpoint = '/summary'
     var info;
-    var keywords_clicked = true;
+    var keywords_clicked = false;
     var big_font = false;
     var dark_mode = false;
     var options_clicked = false;
-    var download_clicked = false;
     var about_clicked = false;
     var hide_clicked = false;
     var h1_button_font = document.getElementById("h1_button_font");
@@ -41,19 +40,17 @@ window.onload = function(){
         for (const[name, nr] of Object.entries(dictionary)){
             str += name + ': ' + nr + ', ';
         }
-            
-        console.log(str);
         return str;
     }
 
-    window.addEventListener("beforeunload", function (e) {
-        dictionary = objToString(dictionary);
-        download("click-rate.txt", dictionary);
-        var confirmationMessage = "\o/";
-    
-        (e || window.event).returnValue = confirmationMessage;     //Gecko + IE
-        return confirmationMessage;                                //Webkit, Safari, Chrome etc.
-    });
+//    window.addEventListener("beforeunload", function (e) {
+//        dictionary = objToString(dictionary);
+////        download("click-rate.txt", dictionary);
+//        var confirmationMessage = "\o/";
+//
+//        (e || window.event).returnValue = confirmationMessage;     //Gecko + IE
+//        return confirmationMessage;                                //Webkit, Safari, Chrome etc.
+//    });
 
     ///////////// Embedded Video /////////////
 
@@ -65,6 +62,7 @@ window.onload = function(){
     firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
     var ytplayer;
     var result = '';
+    var result_summary = '';
     
     function onPlayerReady(event) {
         event.target.playVideo();
@@ -79,13 +77,8 @@ window.onload = function(){
                 if(keywords_clicked){
                     transcript_id_content.innerHTML = postTranscript(extopics, final_str);
                 } else {
-                    transcript_id_content.innerHTML = final_str; 
+                    transcript_id_content.innerHTML = final_str;
                 }
-
-                if(download_clicked){
-                    download_clicked = false;
-                    download("transcript.txt", final_str);
-                }          
             }, 100);
         }
         else {
@@ -111,23 +104,66 @@ window.onload = function(){
 
     ///////////// Transcript functions /////////////
 
-    window.onload = getTab(keywords_clicked);
-    function fetchSummary(server, summary_endpoint, info) {
-                    $.ajax({
-                        type:"POST",
-                        url: server + summary_endpoint,
-                        data: JSON.stringify(info),
-                        dataType: "json",
-                        contentType: "application/json;charset=UTF-8",
-                        success: function(res){
-                            result = "\n\n\nSummary:\n" + res['summary'];
-                            final_str += result
 
-                            }
-                        });
-                }
+    window.onload = initTranscript();
 
-    function getTab(keywords_clicked, download_clicked){
+    function initTranscript(){
+        chrome.tabs.query({'active': true}, function (tabs) {
+            info = {'url':tabs[0].url};
+            fetchTranscripts(server, transcript_endpoint, info)
+            fetchTopics(server, topic_endpoint);
+        });
+        getTab()
+     }
+
+    function fetchSummary(server, summary_endpoint) {
+        $.ajax({
+            type:"POST",
+            url: server + summary_endpoint,
+            dataType: "json",
+            contentType: "application/json;charset=UTF-8",
+            success: save_summary
+            });
+    }
+    function save_summary(res){
+        result_summary = "\n\n\nSummary:\n" + res['summary'];
+        dtranscript = final_str + result_summary;
+        download('transcript.txt', dtranscript);
+        loading_img.style.display = "none";
+    }
+
+    /*Fetching topics and storing it global variable*/
+    function fetchTopics(server, topic_endpoint){
+        $.ajax({
+            type:"POST",
+            url: server + topic_endpoint,
+            dataType: "json",
+            contentType: "application/json;charset=UTF-8",
+            success: topic_save
+            });
+    }
+    function topic_save(topics){
+        extopics = topics;
+    }
+
+    /*Fetching transcript and storing it in global variable*/
+    function fetchTranscripts(server, transcript_endpoint, info) {
+        $.ajax({
+            type:"POST",
+            url: server + transcript_endpoint,
+            data: JSON.stringify(info),
+            dataType: "json",
+            contentType: "application/json;charset=UTF-8",
+            success: store_transcript
+            });
+    }
+    function store_transcript(res){
+        result = res['__transcript'];
+        final_str = useTimeStamp(result,0);
+        transcript_id_content.innerHTML = final_str;
+    }
+
+    function getTab(){
         chrome.tabs.query({'active': true}, function (tabs) {
             info = {'url':tabs[0].url};
             video_id = urlToId(info.url);
@@ -142,46 +178,13 @@ window.onload = function(){
                     }
                 });
               }
-            fetchTranscripts(server, transcript_endpoint, info, keywords_clicked, download_clicked);
-            fetchTopics(server, topic_endpoint);
         });
-    }
-
-    function fetchTranscripts(server, transcript_endpoint, info, keywords_clicked, callback) {
-        $.ajax({
-            type:"POST",
-            url: server + transcript_endpoint,
-            data: JSON.stringify(info),
-            dataType: "json",
-            contentType: "application/json;charset=UTF-8",
-            success: store_transcript
-            });
-    }
-
-    function store_transcript(res){
-        result = res['__transcript'];
-        final_str = useTimeStamp(result,0);
-        transcript_id_content.innerHTML = final_str;
     }
 
     function urlToId(url){
         var regExp = /^.*((youtu.be\/)|(v\/)|(\/u\/\w\/)|(embed\/)|(watch\?))\??v?=?([^#&?]*).*/;
         var match = url.match(regExp);
         return (match&&match[7].length==11)? match[7] : false;
-    }
-
-    function fetchTopics(server, topic_endpoint){
-        $.ajax({
-            type:"POST",
-            url: server + topic_endpoint,
-            dataType: "json",
-            contentType: "application/json;charset=UTF-8",
-            success: topic_save
-            });
-    }
-
-    function topic_save(topics){
-        extopics = topics;
     }
 
     function postTranscript(topics, final_str){
@@ -192,8 +195,6 @@ window.onload = function(){
             }
             return final_str;
         }
-
-    
     function clickOrigin(e){
         target_var = e.target;
         var tag = [];
@@ -204,7 +205,6 @@ window.onload = function(){
             
         return tag;
     }
-            
     document.body.onclick = function(e){
         elem = clickOrigin(e);
         text = target_var.innerHTML;
@@ -215,7 +215,6 @@ window.onload = function(){
                 value = dictionary["" + (text) + ""]
                 dictionary["" + (text) + ""] = value+1;
             }
-            console.log(dictionary)
         }
     }
 
@@ -231,11 +230,11 @@ window.onload = function(){
         if(!keywords_clicked){
             h1_button_keywords.innerHTML = "Remove keywords";
             keywords_clicked = true;
-//            getTab(keywords_clicked);
+            transcript_id_content.innerHTML = postTranscript(extopics, final_str);
         } else if(keywords_clicked){
             h1_button_keywords.innerHTML = "Add keywords";
             keywords_clicked = false;
-//            getTab(keywords_clicked);
+            transcript_id_content.innerHTML = final_str;
         }
     }
 
@@ -270,10 +269,9 @@ window.onload = function(){
         } else if (about_clicked){
             h1_button_about.innerHTML = "About";
             if(!keywords_clicked){
-//                getTab(keywords_clicked);
-                transcript_id_content.innerHTML = final_str;
+                 transcript_id_content.innerHTML = postTranscript(extopics, final_str);
             } else if(keywords_clicked){
-                transcript_id_content.innerHTML = final_str;
+                 transcript_id_content.innerHTML = final_str;
             }
             about_clicked = false;
         }
@@ -341,13 +339,8 @@ window.onload = function(){
     }
 
     function onclick_download(){
-        download_clicked = true;
         loading_img.style.display = "inline-block";
-        setTimeout(function(){ 
-            loading_img.style.display = "none";
-        }, 1000);
-        
-        getTab(keywords_clicked, download_clicked);
+        fetchSummary(server, summary_endpoint)
     }
 
     function download(filename, text){
