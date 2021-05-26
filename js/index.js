@@ -27,7 +27,6 @@ window.onload = function(){
     var button_about = document.getElementById("button_about");
     var transcript = document.getElementById("transcript");
     var ytplayer = document.getElementById("ytplayer");
-    var check_img = document.getElementById("check");
     var loading_img = document.getElementById("loading");
     var extopics = [];
     var video_id = 'M7lc1UVf-VE';
@@ -323,16 +322,10 @@ window.onload = function(){
 
     function onclick_download(){
         download_clicked = true;
-        check_img.style.display = "none";
         loading_img.style.display = "inline-block";
         setTimeout(function(){ 
             loading_img.style.display = "none";
-            check_img.style.display = "inline-block"; 
         }, 1000);
-        
-        setTimeout(function(){ 
-            check_img.style.display = "none";
-        }, 500);
         
         getTab(keywords_clicked, download_clicked);
     }

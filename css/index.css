@@ -25,83 +25,16 @@
   overflow: hidden;
 }
 
-#check{
-  position: relative;
-  background-color: transparent;
-  display: none;
-  display: relative;
-  width: 15%;
-  height: 70%;
-  z-index: 100;
-}
-
 #loading{
   position: relative;
+  left: 8%;
   background-color: transparent;
   display: none;
   display: relative;
-  width: 15%;
+  width: 10%;
   height: 70%;
   z-index: 100;
 }
-/*
-  @keyframes bounce{
-    0%{
-      transform: scale(0.9);
-  }
-} */
-/* 
-#active{
-  transition: all ease 0.5s;
-  background-color: transparent;
-  outline: none;
-  font-size: 0;
-  width: 30%;
-  height: 70%;
-  border-radius: 50%;
-  border-left-color: transparent;
-  animation: rotate 1.4s ease 0.5s infinite;
-}
-  @keyframes rotate{
-    0%{
-        transform: rotate(360deg);
-  }
-} */
-/* 
-#button_download.active{
-    transition: all ease 0.5s;
-    background-color: transparent;
-    outline: none;
-    font-size: 0;
-    width: 25px;
-    height: 25px;
-    border-radius: 50%;
-    border-left-color: transparent;
-    animation: rotate 1.4s ease 0.5s infinite;
-}
-
-
-#button_download.success{
-    position: relative;
-    background-color: #afafaf;
-    animation: bounce .3s ease-in;
-}
-@keyframes bounce{
-    0%{
-        transform: scale(0.9);
-    }
-}
-#button_download.success:before{
-    content: '';
-    position: absolute;
-    left: 0;
-    right: 0;
-    margin: 0 auto;
-    width: 31px;
-    height: 31px;
-    line-height:31px;
-    top: 8px;
-} */
 
 #button_start{
   display: inline-flex;
@@ -166,6 +99,7 @@
   left: 0;
   padding: 0.5em 0.5em 0.5em 0.5em;
   border: 0.1rem solid rgb(148, 148, 148);
+  border-radius: 0%;
   background-color: rgb(148, 148, 148);
   text-align: center;
   z-index: 100;
@@ -180,6 +114,7 @@
   padding: 0.5em;
   background-color: rgb(61, 61, 61);
   border: 0.1rem solid rgb(61, 61, 61);
+  border-radius: 0%;
   display: none;
   text-align: center;
   align-items: center;
