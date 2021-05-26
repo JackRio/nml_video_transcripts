@@ -25,7 +25,24 @@
   overflow: hidden;
 }
 
-#loading{
+#button_hide{
+  position: absolute;
+  bottom: 1%;
+  right: 3%;
+  height: 35%;
+  width: 4%;
+  border: 2px solid #afafaf;
+  border-radius: 6px;
+  color: #afafaf;
+}
+
+#img_hide{
+  height: 100%;
+  width: 100%;
+  background-color: transparent;
+}
+
+.loading{
   position: relative;
   left: 8%;
   background-color: transparent;
