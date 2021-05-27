@@ -127,10 +127,30 @@
   z-index: 100;
 }
 
-.form_popup{
+.form_popup {
   display: block;
+  position: absolute;
+  background-color: rgb(148, 148, 148);
+  border: 2px solid rgb(148, 148, 148);
+  border-radius: 6px;
   width: 50%;
   height: 50%;
+  top: 25%;
+  left: 25%;
+  z-index: 100;
+}
+
+.popup_content {
+  position: relative;
+  top: 40%;
+  left: 27%;
+}
+
+#button_ok {
+  position: relative;
+  top: 50%;
+  left: 30%;
+  height: 8%;
 }
 
 .transcript {

@@ -231,9 +231,15 @@ window.onload = function(){
     button_font.addEventListener('click', onclick_font, false);
 
     function onclick_popup(){
-
+        user_id_el = document.getElementById("user_id_text").value;
+        if (user_id_el.length === 0){
+            alert('Please enter a valid user ID');
+        } else {
+            user_id = user_id_el;
+            form_popup.style.display = "none";
+        }
     }
-
+    
     function onclick_keywords(){
         if(!keywords_clicked){
             h1_button_keywords.innerHTML = "Remove keywords";
