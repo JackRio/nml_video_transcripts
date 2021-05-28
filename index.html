@@ -7,18 +7,24 @@
     <script type="text/javascript" src="js/index.js"></script>
 </head>
 <body class="body">
-    <div class="button" id="button_wrapper">
+    <div class="button_wrapper" id="button_wrapper">
         <button class="button" type="button" id="button_about">
-            <div id="underline"></div><h1 class="h1" id="h1_button_about">About</h1></button>
+            <div id="underline"></div>
+            <h1 class="h1" id="h1_button_about">About</h1>
+        </button>
         <button class="button" type="button" id="button_options">
-            <div id="underline"></div><h1 class="h1" id="h1_button_options">Options</h1></button>
+            <div id="underline"></div>
+            <h1 class="h1" id="h1_button_options">Options</h1>
+        </button>
         <button class="button" type="button" id="button_download">
-            <div id="underline"></div><h1 class="h1" id="h1_button_download">Download</h1>
-            <img class="loading" id="loading_download" src="../images/loading-buffering.gif" /></button>
+            <div id="underline"></div>
+            <h1 class="h1" id="h1_button_download">Download</h1>
+            <img class="loading" id="loading_download" src="../images/loading-buffering.gif" />
+        </button>
         <button class="button_hide" type="button" id="button_hide">
-                <img id="img_hide" src="../images/up.png" />
-            </button>
-
+            <img id="img_hide" src="../images/up.png" />
+        </button>
+    </div>
         <div class="button" id="options_menu">
             <button class="button" type="button" id="button_keywords">
                 <div id="underline"></div><h1 class="h1" id="h1_button_keywords">Add keywords</h1>
@@ -30,6 +36,14 @@
         </div>
     </div>
     
+    <div class="form_popup" id="form_popup">
+        <div class="popup_content">
+            <label for="user_id" id="enter_id"><b>Enter ID</b></label>
+            <input type="text" placeholder="User ID" name="user_id" id="user_id_text" value="" required> 
+        </div>
+        <button class="button" type="submit" id="button_ok"><h1 class="h1">Ok</h1></button>
+    </div>
+
     <div class="transcript" id="transcript"></div>
 
     <div class="ytplayer" id="ytplayer"></div>
