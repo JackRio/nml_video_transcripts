@@ -4,6 +4,7 @@ window.onload = function(){
     var transcript_endpoint = "/transcript";
     var topic_endpoint = '/topics';
     var summary_endpoint = '/summary'
+    var clickrate_endpoint = '/click_rate'
     var info;
     var keywords_clicked = false;
     var big_font = false;
@@ -48,14 +49,16 @@ window.onload = function(){
     }
 
 
-//    window.addEventListener("beforeunload", function (e) {
-//        dictionary = objToString(dictionary);
-////        download("click-rate.txt", dictionary);
-//        var confirmationMessage = "\o/";
-//
-//        (e || window.event).returnValue = confirmationMessage;     //Gecko + IE
-//        return confirmationMessage;                                //Webkit, Safari, Chrome etc.
-//    });
+   window.addEventListener("beforeunload", function (e) {
+       dictionary = objToString(dictionary);
+       clickrateToServer(dictionary);
+//        download("click-rate.txt", dictionary);
+
+       var confirmationMessage = "\o/";
+
+       (e || window.event).returnValue = confirmationMessage;     //Gecko + IE
+       return confirmationMessage;                                //Webkit, Safari, Chrome etc.
+   });
 
     ///////////// Embedded Video /////////////
 
@@ -236,9 +239,9 @@ window.onload = function(){
     function clickrateToServer(file){
         $.ajax({
             type:"POST",
-            url: server + topic_endpoint,
-            data: file,
-            dataType: "txt",
+            url: server + clickrate_endpoint,
+            data: JSON.stringify(file),
+            dataType: "json",
             contentType: false,
             success: function(response){
                 if(response != 0){
