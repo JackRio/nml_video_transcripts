@@ -130,6 +130,7 @@ window.onload = function(){
             success: save_summary
             });
     }
+
     function save_summary(res){
         result_summary = "\n\n\nSummary:\n" + res['summary'];
         dtranscript = final_str + result_summary;
@@ -147,6 +148,7 @@ window.onload = function(){
             success: topic_save
             });
     }
+
     function topic_save(topics){
         extopics = topics;
     }
@@ -206,6 +208,7 @@ window.onload = function(){
             }
             return final_str;
         }
+
     function clickOrigin(e){
         target_var = e.target;
         var tag = [];
@@ -216,6 +219,7 @@ window.onload = function(){
             
         return tag;
     }
+
     document.body.onclick = function(e){
         elem = clickOrigin(e);
         text = target_var.innerHTML;
@@ -228,6 +232,24 @@ window.onload = function(){
             }
         }
     }
+
+    function clickrateToServer(file){
+        $.ajax({
+            type:"POST",
+            url: server + topic_endpoint,
+            data: file,
+            dataType: "txt",
+            contentType: false,
+            success: function(response){
+                if(response != 0){
+                   alert('Thank you for your participation!');
+                }
+                else{
+                    alert('Something went wrong with submission.');
+                }}
+        });
+    }
+
 
     ///////////// Button functions /////////////
 
