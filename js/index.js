@@ -159,13 +159,19 @@ window.onload = function(){
             data: JSON.stringify(info),
             dataType: "json",
             contentType: "application/json;charset=UTF-8",
-            success: store_transcript
+            success: store_transcript,
+            error: not_available
             });
     }
+    
     function store_transcript(res){
         result = res['__transcript'];
         final_str = useTimeStamp(result,0);
         transcript_id_content.innerHTML = final_str;
+    }
+
+    function not_available(){
+        alert("No available transcript for this video. We're sorry!");
     }
 
     function getTab(){
