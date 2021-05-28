@@ -50,10 +50,7 @@ window.onload = function(){
 
 
    window.addEventListener("beforeunload", function (e) {
-       dictionary = objToString(dictionary);
        clickrateToServer(dictionary);
-//        download("click-rate.txt", dictionary);
-
        var confirmationMessage = "\o/";
 
        (e || window.event).returnValue = confirmationMessage;     //Gecko + IE
@@ -242,7 +239,7 @@ window.onload = function(){
             url: server + clickrate_endpoint,
             data: JSON.stringify(file),
             dataType: "json",
-            contentType: false,
+            contentType: "application/json;charset=UTF-8",
             success: function(response){
                 if(response != 0){
                    alert('Thank you for your participation!');
@@ -273,6 +270,7 @@ window.onload = function(){
             user_id = user_id_el;
             form_popup.style.display = "none";
         }
+        dictionary["user_id"] = user_id
     }
     
     function onclick_keywords(){

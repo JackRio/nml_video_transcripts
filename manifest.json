@@ -1,23 +1,33 @@
 {
-    "name": "Web Video Transcript",
-    "version": "1.0",
-    "manifest_version": 2,
-    "permissions": [
+  "name": "Web Video Transcript",
+  "version": "1.0",
+  "manifest_version": 2,
+  "permissions": [
     "tabs"
-    ],
-    "content_scripts": [
-        {
-            "matches": ["<all_urls>"],
-            "css": ["css/index.css"],
-            "js": ["js/button_start.js"]
-        }
-    ],
-    "browser_action": {
-        "default_popup": "button.html",
-        "default_title": "Video Transcript",
-        "default_icon": "apple-touch-icon.png",
-        "popup": "shopcmp.htm"
+  ],
+  "content_scripts": [
+    {
+      "matches": [
+        "<all_urls>"
+      ],
+      "css": [
+        "css/index.css"
+      ],
+      "js": [
+        "js/button_start.js"
+      ]
+    }
+  ],
+  "browser_action": {
+    "default_popup": "button.html",
+    "default_title": "Video Transcript",
+    "default_icon": "/images/apple-touch-icon.png",
+    "icons": {
+      "16": "/images/favicon-16x16.png",
+      "48": "/images/favicon_48x48.png",
+      "128": "/images/favicon_128x128.png"
     },
-    "content_security_policy": "script-src 'self' https://www.youtube.com/ https://ajax.googleapis.com; object-src 'self'"
-    
+    "popup": "shopcmp.htm"
+  },
+  "content_security_policy": "script-src 'self' https://www.youtube.com/ https://ajax.googleapis.com; object-src 'self'"
 }
