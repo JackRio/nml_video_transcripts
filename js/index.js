@@ -70,7 +70,7 @@ window.onload = function(){
     var result_summary = '';
     
     function onPlayerReady(event) {
-        event.target.playVideo();
+        event.target.pauseVideo();
     }
 
     function onPlayerStateChange(event){
@@ -79,29 +79,35 @@ window.onload = function(){
                 var time;
                 time = ytplayer.getCurrentTime();
                 final_str = useTimeStamp(result,time);
+
                 if(keywords_clicked){
                     transcript_id_content.innerHTML = postTranscript(extopics, final_str);
                 } else {
                     transcript_id_content.innerHTML = final_str;
                 }
-            }, 100);
+            }, 400);
         }
         else {
             clearInterval(myTimer);
         }
     }
-    
+
+    function fmtMSS(s){return(s-(s%=60))/60+(9<s?':':':0')+s}
+
     function useTimeStamp(result,time){
         final_str = "";
+        flag = true;
         for (ele in result){
             start_time = result[ele]['start'];
-            end_time = start_time + result[ele]['duration'];
+            end_time = start_time + result[ele]['duration']/2;
             
-            if(time >= start_time && time <= end_time){
-                final_str += '<a target="_blank" style="color:orange;font-weight:bold">' + result[ele]['text'] + '</a>' + " ";
+            if(time > start_time && time <= end_time && flag){
+                final_str += '<a target="_blank" style="color:orange;font-weight:bold">' + `${fmtMSS(Math.round(start_time))} ` + result[ele]['text'] + '</a>' + " ";
+                flag = false;
             }
             else{
-                final_str += result[ele]['text'] + " ";
+                html_tag = `<p id=${start_time} class=transcript_sentences>` + `${fmtMSS(Math.round(start_time))} ` + result[ele]['text'] + '</p>'
+                final_str += html_tag;
             }
         }
         return final_str;
@@ -168,6 +174,7 @@ window.onload = function(){
     
     function store_transcript(res){
         result = res['__transcript'];
+
         final_str = useTimeStamp(result,0);
         transcript_id_content.innerHTML = final_str;
     }
@@ -261,6 +268,13 @@ window.onload = function(){
     button_ok.addEventListener('click', onclick_popup, false);
     button_dark_light.addEventListener('click', onclick_dark_light, false);
     button_font.addEventListener('click', onclick_font, false);
+    transcript_id_content.addEventListener("click", on_mouse_click, true);
+
+    function on_mouse_click(){
+       $(".transcript_sentences").click(function(){
+            ytplayer.seekTo(this.id, true);
+       });
+    }
 
     function onclick_popup(){
         user_id_el = document.getElementById("user_id_text").value;
