@@ -1,9 +1,10 @@
 
 window.onload = function(){
-    var server = "http://localhost:5000";
+    var server = "http://donald.ai.ru.nl";
     var transcript_endpoint = "/transcript";
     var topic_endpoint = '/topics';
     var summary_endpoint = '/summary'
+    var clickrate_endpoint = '/click_rate'
     var info;
     var keywords_clicked = false;
     var big_font = false;
@@ -48,14 +49,13 @@ window.onload = function(){
     }
 
 
-//    window.addEventListener("beforeunload", function (e) {
-//        dictionary = objToString(dictionary);
-////        download("click-rate.txt", dictionary);
-//        var confirmationMessage = "\o/";
-//
-//        (e || window.event).returnValue = confirmationMessage;     //Gecko + IE
-//        return confirmationMessage;                                //Webkit, Safari, Chrome etc.
-//    });
+   window.addEventListener("beforeunload", function (e) {
+       clickrateToServer(dictionary);
+       var confirmationMessage = "\o/";
+
+       (e || window.event).returnValue = confirmationMessage;     //Gecko + IE
+       return confirmationMessage;                                //Webkit, Safari, Chrome etc.
+   });
 
     ///////////// Embedded Video /////////////
 
@@ -130,6 +130,7 @@ window.onload = function(){
             success: save_summary
             });
     }
+
     function save_summary(res){
         result_summary = "\n\n\nSummary:\n" + res['summary'];
         dtranscript = final_str + result_summary;
@@ -147,6 +148,7 @@ window.onload = function(){
             success: topic_save
             });
     }
+
     function topic_save(topics){
         extopics = topics;
     }
@@ -159,13 +161,19 @@ window.onload = function(){
             data: JSON.stringify(info),
             dataType: "json",
             contentType: "application/json;charset=UTF-8",
-            success: store_transcript
+            success: store_transcript,
+            error: not_available
             });
     }
+    
     function store_transcript(res){
         result = res['__transcript'];
         final_str = useTimeStamp(result,0);
         transcript_id_content.innerHTML = final_str;
+    }
+
+    function not_available(){
+        alert("No available transcript for this video. We're sorry!");
     }
 
     function getTab(){
@@ -200,6 +208,7 @@ window.onload = function(){
             }
             return final_str;
         }
+
     function clickOrigin(e){
         target_var = e.target;
         var tag = [];
@@ -210,6 +219,7 @@ window.onload = function(){
             
         return tag;
     }
+
     document.body.onclick = function(e){
         elem = clickOrigin(e);
         text = target_var.innerHTML;
@@ -222,6 +232,24 @@ window.onload = function(){
             }
         }
     }
+
+    function clickrateToServer(file){
+        $.ajax({
+            type:"POST",
+            url: server + clickrate_endpoint,
+            data: JSON.stringify(file),
+            dataType: "json",
+            contentType: "application/json;charset=UTF-8",
+            success: function(response){
+                if(response != 0){
+                   alert('Thank you for your participation!');
+                }
+                else{
+                    alert('Something went wrong with submission.');
+                }}
+        });
+    }
+
 
     ///////////// Button functions /////////////
 
@@ -242,6 +270,7 @@ window.onload = function(){
             user_id = user_id_el;
             form_popup.style.display = "none";
         }
+        dictionary["user_id"] = user_id
     }
     
     function onclick_keywords(){
