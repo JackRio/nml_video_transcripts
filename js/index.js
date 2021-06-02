@@ -70,7 +70,7 @@ window.onload = function(){
     var result_summary = '';
     
     function onPlayerReady(event) {
-        event.target.playVideo();
+        event.target.pauseVideo();
     }
 
     function onPlayerStateChange(event){
@@ -261,6 +261,18 @@ window.onload = function(){
     button_ok.addEventListener('click', onclick_popup, false);
     button_dark_light.addEventListener('click', onclick_dark_light, false);
     button_font.addEventListener('click', onclick_font, false);
+    transcript_id_content.addEventListener("mouseover", on_mouse_hover, false);
+    transcript_id_content.addEventListener("mouseout", on_mouse_out, false);
+
+    function on_mouse_hover()
+    {
+       transcript_id_content.setAttribute("style", "background-color:blue;")
+    }
+
+    function on_mouse_out()
+    {
+       transcript_id_content.setAttribute("style", "background-color:green;")
+    }
 
     function onclick_popup(){
         user_id_el = document.getElementById("user_id_text").value;
