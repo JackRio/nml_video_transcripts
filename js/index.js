@@ -270,8 +270,7 @@ window.onload = function(){
     button_font.addEventListener('click', onclick_font, false);
     transcript_id_content.addEventListener("click", on_mouse_click, true);
 
-    function on_mouse_click()
-    {
+    function on_mouse_click(){
        $(".transcript_sentences").click(function(){
             ytplayer.seekTo(this.id, true);
        });
