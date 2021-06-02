@@ -1,6 +1,6 @@
 
 window.onload = function(){
-    var server = "http://localhost:5000";
+    var server = "http://donald.ai.ru.nl";
     var transcript_endpoint = "/transcript";
     var topic_endpoint = '/topics';
     var summary_endpoint = '/summary'
