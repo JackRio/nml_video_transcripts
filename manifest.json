@@ -29,5 +29,5 @@
     },
     "popup": "shopcmp.htm"
   },
-  "content_security_policy": "script-src 'self' https://www.youtube.com/ https://ajax.googleapis.com; object-src 'self'"
+  "content_security_policy": "script-src 'self' https://www.youtube.com/ https://ajax.googleapis.com https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.3.2/jspdf.min.js; object-src 'self'"
 }
