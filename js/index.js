@@ -422,11 +422,33 @@ window.onload = function(){
     }
 
     function downloadpdf(filename, html){
-        var doc = new jsPDF();
-        doc.fromHTML(html);
+        var doc = new jsPDF();      
+        specialElementHandlers = {
+            '#bypassme': function (element, renderer) {
+                return true
+            }
+        };
 
-        doc.text(20,20,text);
-        doc.save(filename);
+        margins = {
+            top: 10,
+            bottom: 10,
+            left: 10,
+            width: 190
+        };
+        doc.fromHTML(
+            html,
+            margins.left, 
+            margins.top, { 
+                'width': margins.width, 
+                'elementHandlers': specialElementHandlers
+            },
+            function (dispose) {
+                doc.save(filename);
+            }, margins
+        );
+
+        // doc.fromHTML(html);
+        // doc.save(filename);
 
         
     }
