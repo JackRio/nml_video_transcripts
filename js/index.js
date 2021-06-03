@@ -139,7 +139,7 @@ window.onload = function(){
     function save_summary(res){
         result_summary = "\n\n\nSummary:\n" + res['summary'];
         dtranscript = final_str + result_summary;
-        download('transcript.txt', dtranscript);
+        downloadpdf('transcript.pdf', dtranscript);
         loading_img.style.display = "none";
     }
 
@@ -419,31 +419,12 @@ window.onload = function(){
         fetchSummary(server, summary_endpoint)
     }
 
-    function download(filename, text){
+    function downloadpdf(filename, text){
         var doc = new jsPDF();
 
         doc.text(20,20,text);
-        doc.save('transcript.pdf');
-        // import pdfMake from 'pdfmake/build/pdfmake.js';
-        // import pdfFonts from 'pdfmake/build/vfs_fonts.js';
-        // pdfMake.vfs = pdfFonts.pdfMake.vfs;
+        doc.save(filename);
 
-        // const document = { content: [{text: text, fontStyle: 15, lineHeight: 2}] }
-
-        // pdfMake.createPdf(document).download();
-
-        // var element = document.createElement('a');
-
-        // element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(text));
-        
-        // element.setAttribute('download', filename);
-         
-        // element.style.display = 'none';
-        // document.body.appendChild(element);
-        
-        // element.click();
-          
-        // document.body.removeChild(element);
         
     }
 
