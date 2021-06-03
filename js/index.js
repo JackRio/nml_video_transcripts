@@ -91,7 +91,9 @@ window.onload = function(){
         }
     }
 
-    function fmtMSS(s){return(s-(s%=60))/60+(9<s?':':':0')+s}
+    function fmtMSS(s){
+        return(s-(s%=60))/60+(9<s?':':':0')+s
+    }
 
     function useTimeStamp(result,time){
         final_str = "";
@@ -419,8 +421,9 @@ window.onload = function(){
         fetchSummary(server, summary_endpoint)
     }
 
-    function downloadpdf(filename, text){
+    function downloadpdf(filename, html){
         var doc = new jsPDF();
+        doc.fromHTML(html);
 
         doc.text(20,20,text);
         doc.save(filename);
