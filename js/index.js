@@ -26,6 +26,7 @@ window.onload = function(){
     var button_wrapper = document.getElementById("button_wrapper");
     var h1_button_about = document.getElementById("h1_button_about");
     var button_about = document.getElementById("button_about");
+    var button_code = document.getElementById("button_code");
     var transcript = document.getElementById("transcript");
     var ytplayer = document.getElementById("ytplayer");
     var loading_img = document.getElementById("loading_download");
@@ -300,6 +301,7 @@ window.onload = function(){
     }
 
     function showWrapper(){
+        button_code.style.display = "inline-flex";
         button_about.style.display = "inline-flex";
         button_download.style.display = "inline-flex";
         button_options.style.display = "inline-flex";
@@ -307,6 +309,7 @@ window.onload = function(){
     }
     
     function hideWrapper(){
+        button_code.style.display = "none";
         button_about.style.display = "none";
         button_download.style.display = "none";
         button_options.style.display = "none";
