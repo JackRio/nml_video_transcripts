@@ -428,10 +428,9 @@ window.onload = function(){
                 return true
             }
         };
-
         margins = {
-            top: 10,
-            bottom: 10,
+            top: 0,
+            bottom: 0,
             left: 10,
             width: 190
         };
@@ -446,10 +445,6 @@ window.onload = function(){
                 doc.save(filename);
             }, margins
         );
-
-        // doc.fromHTML(html);
-        // doc.save(filename);
-
         
     }
 
