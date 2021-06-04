@@ -1,6 +1,6 @@
 @import url('https://fonts.googleapis.com/css?family=Raleway:300,400');
 
-.body {
+#body {
   background-color: rgb(233, 233, 233);
   font-family: 'Arial', sans-serif;
 }
@@ -11,7 +11,7 @@
   letter-spacing: 1.5px;
 }
 
-.button {
+#button_about, #button_options, #button_download, #button_keywords, #button_font, #button_dark_light, #button_ok {
   display: inline-flex;
   position: relative;
   height: 60%;
@@ -85,7 +85,7 @@
   overflow: hidden;
 }
 
-.button:hover #underline {
+#button_start:hover #underline, #button_about:hover #underline, #button_options:hover #underline, #button_download:hover #underline, #button_keywords:hover #underline, #button_font:hover #underline, #button_dark_light:hover #underline, #button_ok:hover #underline {
   left: 0;
 }
 
