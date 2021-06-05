@@ -1,4 +1,3 @@
-
 window.onload = function(){
     var server = "http://donald.ai.ru.nl";
     var transcript_endpoint = "/transcript";
@@ -93,7 +92,9 @@ window.onload = function(){
         }
     }
 
-    function fmtMSS(s){return(s-(s%=60))/60+(9<s?':':':0')+s}
+    function fmtMSS(s){
+        return(s-(s%=60))/60+(9<s?':':':0')+s
+    }
 
     function useTimeStamp(result,time){
         final_str = "";
@@ -141,7 +142,7 @@ window.onload = function(){
     function save_summary(res){
         result_summary = "\n\n\nSummary:\n" + res['summary'];
         dtranscript = final_str + result_summary;
-        download('transcript.txt', dtranscript);
+        downloadpdf('transcript.pdf', dtranscript);
         loading_img.style.display = "none";
     }
 
@@ -423,19 +424,30 @@ window.onload = function(){
         fetchSummary(server, summary_endpoint)
     }
 
-    function download(filename, text){
-        var element = document.createElement('a');
-
-        element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(text));
-        
-        element.setAttribute('download', filename);
-         
-        element.style.display = 'none';
-        document.body.appendChild(element);
-        
-        element.click();
-          
-        document.body.removeChild(element);
+    function downloadpdf(filename, html){
+        var doc = new jsPDF();      
+        specialElementHandlers = {
+            '#bypassme': function (element, renderer) {
+                return true
+            }
+        };
+        margins = {
+            top: 0,
+            bottom: 0,
+            left: 10,
+            width: 190
+        };
+        doc.fromHTML(
+            html,
+            margins.left, 
+            margins.top, { 
+                'width': margins.width, 
+                'elementHandlers': specialElementHandlers
+            },
+            function (dispose) {
+                doc.save(filename);
+            }, margins
+        );
         
     }
 
