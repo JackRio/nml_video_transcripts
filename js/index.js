@@ -125,6 +125,7 @@ window.onload = function(){
             info = {'url':tabs[0].url};
             fetchTranscripts(server, transcript_endpoint, info)
             fetchTopics(server, topic_endpoint);
+            onclick_keywords();
         });
         getTab()
      }
