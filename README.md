@@ -1,6 +1,6 @@
-Course: [New Media Lab](https://www.ru.nl/courseguides/science/vm/osirislinks/andere-faculteiten5/sow-mki52-new-media-lab/)
-University: Radboud University
-Contributors: [Sanyog Vyawahare](https://github.com/JackRio), [Britt van Gemert](https://github.com/Brittvg), [Max Gardein](https://github.com/MGardien), and Tim Langeveld  
+Course: [New Media Lab](https://www.ru.nl/courseguides/science/vm/osirislinks/andere-faculteiten5/sow-mki52-new-media-lab/)  
+University: Radboud University  
+Contributors: [Sanyog Vyawahare](https://github.com/JackRio), [Britt van Gemert](https://github.com/Brittvg), [Max Gardein](https://github.com/MGardien), and Tim Langeveld    
 
 
 This repository is for the course New Media Lab at Radboud University (2020-2021).  
